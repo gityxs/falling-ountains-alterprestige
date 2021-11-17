@@ -126,7 +126,7 @@ addLayer("Miniprestige", {
         },
         42: {
             name: "Y2K",
-            done() {return player.Nanoprestige.points.gte(3)},
+            done() {return player.Nanoprestige.points.gte(2000)},
             tooltip: "Get 2000 Nanoprestiges."
         },
         43: {
