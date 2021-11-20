@@ -23,6 +23,8 @@ addLayer("Nanoprestige", {
         if (hasUpgrade("Microprestige", 12)) mult = mult.div(3)
         if (hasUpgrade("Microprestige", 13)) mult = mult.div(upgradeEffect("Microprestige", 13))
         if (hasUpgrade("Nanoprestige", 21)  && !inChallenge("Nanoprestige", 21)&& !inChallenge("Nanoprestige", 11)) mult = mult.div(buyableEffect("Nanoprestige", 21))
+        if (hasUpgrade("Microprestige", 44)) mult = mult.div("1e5000")
+        if (hasUpgrade("BrokenNano", 11)) mult = mult.div(buyableEffect("Nanoprestige", 31))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -33,6 +35,9 @@ addLayer("Nanoprestige", {
         if (hasChallenge("Nanoprestige", 21)) mult = mult.times(1.3)
         if (hasUpgrade("Nanoprestige", 51) && !inChallenge("Nanoprestige", 21)) mult = mult.times(1.1)
         if (hasUpgrade("Nanoprestige", 55)) mult = mult.times(1.23)
+        if (hasUpgrade("Nanoprestige", 65)) mult = mult.times(3.1)
+        if (hasUpgrade("Microprestige",14)) mult = mult.times(buyableEffect("Microprestige", 11))
+        if (hasUpgrade("Microprestige", 42)) mult = mult.times(tmp.BrokenNano.effect)
         return mult
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -45,7 +50,9 @@ addLayer("Nanoprestige", {
                 var cost
                 cost = new Decimal("40").plus(Decimal.mul("5", x))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 12)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (hasUpgrade("Microprestige",43)) cost = cost.div(buyableEffect("Microprestige", 12))
                 if (x.gte(110)) cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 110)))
+                if (x.gte(220)) cost = cost.pow(2)
                 return cost;
             },
             title() { return "Nanobuff"},
@@ -57,7 +64,7 @@ addLayer("Nanoprestige", {
             },
             canAfford() { return player[this.layer].points.gte(this.cost()) },
             buy() {
-                if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost(player.Nanoprestige.buyables[11]))
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -77,7 +84,9 @@ addLayer("Nanoprestige", {
                 var cost;
                 cost = new Decimal("85").plus(Decimal.mul("15", x))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (hasUpgrade("Microprestige",43)) cost = cost.div(buyableEffect("Microprestige", 12))
                 if (x.gte(35)) cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 35)))
+                if (x.gte(220)) cost = cost.pow(2)
                 return cost
             
             },
@@ -109,7 +118,7 @@ addLayer("Nanoprestige", {
             cost(x) {return new Decimal("150").times(Decimal.pow(1.5, x))},
             display() {
             var display;
-                display = "Divide buyable requirements by 1.05<br><br>"
+                display = "Divide buyable requirements by " + format(this.effect()) +"<br><br>"
                 display += "Cost: "+format(this.cost()) + " Nanoprestiges."
                 return display;
             },
@@ -136,6 +145,7 @@ addLayer("Nanoprestige", {
                 var cost;
                 cost = new Decimal("600").plus(Decimal.mul("50", x))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (hasUpgrade("Microprestige",43)) cost = cost.div(buyableEffect("Microprestige", 12))
                 if (x.gte(100) && !hasUpgrade("Nanoprestige", 55)) { 
                     cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 100)))
                 } else if (x.gte(125)) cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 125)))
@@ -143,7 +153,7 @@ addLayer("Nanoprestige", {
             },
             display() {
                 var display;
-                display = "Divide Nano and Microprestige requirements by 1.13<br><br>"
+                display = "Divide Nano and Microprestige requirements by " + format(this.effect()) +"<br><br>"
                 display += "Cost: "+format(this.cost()) + " Nanoprestiges."
                 return display;
             },
@@ -170,12 +180,14 @@ addLayer("Nanoprestige", {
                 var cost;
                 cost = new Decimal("3500").plus(Decimal.mul("200", x))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (hasUpgrade("Microprestige",43)) cost = cost.div(buyableEffect("Microprestige", 12))
                 if (x.gte(5)) cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 5)))
+                if (x.gte(50)) cost = cost.pow(2.8)
                 return cost
             },
             display() {
                 var display;
-                display = "Increase Point gain exponent to ^1.01<br><br>"
+                display = "Increase Point gain exponent to ^" + format(this.effect()) +"<br><br>"
                 display += "Cost: "+format(this.cost()) + " Nanoprestiges."
                 return display;
             },
@@ -194,8 +206,78 @@ addLayer("Nanoprestige", {
                 let eff = new Decimal(base).pow(player[this.layer].buyables[this.id])
                 return eff;
             }
-        }
+        },
+        23: {
+            title() {return "Nanofracture"},
+            cost(x) {
+                var cost;
+                cost = new Decimal("4500000").plus(Decimal.mul("1500000", x))
+                if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (hasUpgrade("Microprestige",43)) cost = cost.div(buyableEffect("Microprestige", 12))
+                if (x.gte(2)) cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 2)))
+                if (x.gte(50)) cost = cost.times(Decimal.pow(1.1, Decimal.sub(x, 50)))
+                if (x.gte(10)) cost = cost.pow(1.05)
+                return cost
+            },
+            display() {
+                var display;
+                display = "Increase Nanoprestige point gain by " + format(this.effect()) +"x.<br><br>"
+                display += "Cost: "+format(this.cost()) + " Nanoprestiges."
+                return display;
+            },
+            canAfford() { return player[this.layer].points.gte(this.cost()) },
+            buy() {
+                if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            unlocked() {
+                if (hasUpgrade("Nanoprestige",61)) {
+                    return true
+                } else return false
+            },
+            effect() {
+                var base = new Decimal(1.25)
+                if (hasUpgrade("Nanoprestige", 63)) base = base.plus(0.25)
+                let eff = new Decimal(base).pow(player[this.layer].buyables[this.id])
+                return eff;
+            }
 
+        },
+        31: {
+            title() {return "Nanoskewer"},
+            cost(x) {
+                var cost;
+                cost = new Decimal("10000000000").plus(Decimal.mul("2500000000", x))
+                if (x.gte(2)) cost = cost.times(Decimal.pow(1.05, Decimal.sub(x, 2)))
+                if (x.gte(50)) cost = cost.times(Decimal.pow(1.1, Decimal.sub(x, 50)))
+                if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (hasUpgrade("Microprestige",43)) cost = cost.div(buyableEffect("Microprestige", 12))
+                if (x.gte(10)) cost = cost.pow(1.05)
+                return cost
+            },
+            display() {
+                var display;
+                display = "Divide Nano and Micro, and Miniprestige requirements by " + format(this.effect()) +"<br><br>"
+                display += "Cost: "+format(this.cost()) + " Nanoprestiges."
+                return display;
+            },
+            canAfford() { return player[this.layer].points.gte(this.cost()) },
+            buy() {
+                if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            unlocked() {
+                if (hasUpgrade("BrokenNano", 11)) {
+                    return true
+                } else return false
+            },
+            effect() {
+                var base = new Decimal(1.13)
+                if (hasUpgrade("BrokenNano", 12)) base = base.plus(0.03)
+                let eff = new Decimal(base).pow(player[this.layer].buyables[this.id])
+                return eff;
+            }
+        },
     },
     upgrades: {
         11: {
@@ -400,7 +482,46 @@ addLayer("Nanoprestige", {
             description: "Buyable 21's cost scaling occurs 100 upgrades later. Reduce base scaling for Nano.",
             cost: new Decimal(7290),
             unlocked() {return hasChallenge("Nanoprestige", 22)}
-        }
+        },
+        61: {
+            name: "Nanofracture",
+            title: "Nanofracture",
+            description: "Welcome to post-Break nano. Check on your buyables.",
+            cost: new Decimal(1000000),
+            unlocked() {return hasUpgrade("Microprestige", 42)}
+        },
+        62: {
+            name: "Nanostrawman",
+            title: "Nanostrawman",
+            description: "Cube Microstrawman.",
+            cost: new Decimal(1.7e6),
+            unlocked() {return (hasMilestone("BrokenNano", 2))}
+        },
+        63: {
+            name: "Nanoagain",
+            title: "Nanoagain",
+            description: "Nanofracture's effect is increased.",
+            cost: new Decimal(3333333),
+            unlocked() {return (hasMilestone("BrokenNano", 3))}
+        },
+        64: {
+            name: "Nanowrimo",
+            title: "Nanowrimo",
+            description: "Nanoprestige Points boost Point gain.",
+            cost: new Decimal(1e7),
+            unlocked() {return (hasMilestone("BrokenNano", 5))},
+            effect() {
+                return player.BrokenNano.points.plus(1).pow(3);
+            },
+            effectDisplay() {return format(upgradeEffect("Nanoprestige", 64))+"x"}
+        },
+        65: {
+            name: "Nanofinale2",
+            title: "Nanofinale 2",
+            description: "Reduce base scaling for Nano, Micro, and Mini.",
+            cost: new Decimal(1.4e7),
+            unlocked() {return hasMilestone("BrokenNano", 6)},
+        },
     },
     challenges: {
         11: {
@@ -435,12 +556,20 @@ addLayer("Nanoprestige", {
             rewardDescription: "Unlock the final Nanoprestige upgrade (before Small Prestige resets).",
             unlocked() {return hasUpgrade("Nanoprestige", 54)},
             countsAs: [11, 12, 21]
-        }
-
+        },
 
     },
     autoPrestige() {
         return hasUpgrade("Nanoprestige", 23)
+    },
+    automate() {
+        if (hasUpgrade("Miniprestige",22)) buyBuyable("Nanoprestige", 11)
+        if (hasUpgrade("Miniprestige",22)) buyBuyable("Nanoprestige", 12)
+        if (hasUpgrade("Miniprestige",22)) buyBuyable("Nanoprestige", 13)
+        if (hasUpgrade("Miniprestige",22)) buyBuyable("Nanoprestige", 21)
+        if (hasUpgrade("Miniprestige",22)) buyBuyable("Nanoprestige", 22)
+        if (hasUpgrade("Miniprestige",22) && hasUpgrade("Nanoprestige", 61)) buyBuyable("Nanoprestige", 23)
+        if (hasUpgrade("Miniprestige",22) && hasUpgrade("BrokenNano", 11)) buyBuyable("Nanoprestige", 31)
     },
     doReset(layer) {
         let keep = [];
@@ -454,10 +583,12 @@ addLayer("Nanoprestige", {
             if (hasUpgrade("Nanoprestige", 41)) {
                 keep.push("upgrades")
                 keep.push("buyables")
+                if (hasMilestone("BrokenNano", 0)) keep.push("challenges")
             }
             layerDataReset(this.layer, keep)
 
         } else if (layer == "Smallprestige") {
+            if (hasUpgrade("Miniprestige", 22)) keep.push("upgrades")
             layerDataReset(this.layer, keep)
 
 
@@ -466,9 +597,25 @@ addLayer("Nanoprestige", {
     canBuyMax() {
         return hasUpgrade("Nanoprestige", 23)
     },
+    bars: {
+        break: {
+            direction: RIGHT,
+            width:200,
+            height:50,
+            progress() {
+                var prog = 0
+                if (hasUpgrade("Nanoprestige",34)) prog += 0.33
+                if (hasUpgrade("Nanoprestige",41)) prog += 0.33
+                if (hasUpgrade("Miniprestige",13)) prog += 0.33
+                return prog;
+            },
+            unlocked() {return hasUpgrade("Microprestige", 34)}
+        }
+    },
+    resetsNothing() {return hasUpgrade("Microprestige", 34)},
     tabFormat: {
         "Upgrades": {
-            content: ["main-display", "resource-display", "prestige-button", "upgrades"],
+            content: ["main-display", "resource-display", "prestige-button", ["bar", "break"], "upgrades"],
             unlocked() {return player.Miniprestige.points.gte(1)}
         },
         "Buyables": {
@@ -486,4 +633,133 @@ addLayer("Nanoprestige", {
 
     },
     layerShown(){return true}
+})
+addLayer("BrokenNano", {
+    name: "BrokenNano", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "BN", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+		points: new Decimal(0),
+    }},
+    color: "#5BCEFA",
+    requires: new Decimal(350000), // Can be a function that takes requirement increases into account
+    resource: "Nanoprestige Points", // Name of prestige currency
+    baseResource: "Nanoprestiges", // Name of resource prestige is based on
+    baseAmount() {return player.Nanoprestige.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.9, // Prestige currency exponent
+    passiveGeneration() {
+        return 30   
+    },
+    effect() {
+        return new Decimal(1).plus(Decimal.mul(0.02, player.BrokenNano.points.plus(1).ln().pow(2)))
+    },
+    effectDescription() {
+        var desc;
+        desc = "which are reducing Nanoprestige<br> cost scaling by "
+        desc += format(new Decimal(1).plus(Decimal.mul(0.02, player.BrokenNano.points.plus(1).ln().pow(2)))) + "x"
+        return desc
+    },
+    branches: ["Nanoprestige"],
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        if (hasUpgrade("Nanoprestige", 61)) mult = mult.mul(buyableEffect("Nanoprestige", 23))
+        if (hasMilestone("BrokenNano", 4)) mult = mult.mul(player.Nanoprestige.points.pow(1/8))
+        if (hasUpgrade("BrokenNano", 12)) mult = mult.mul(player.Microprestige.points)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1)
+    },
+    row: 0, // Row the layer is in on the tree (0 is the first row)
+    
+    upgrades: {
+        11: {
+            name: "broken1",
+            title: "11",
+            cost: new Decimal(1e20),
+            description: "falsify?",
+            unlocked() {return hasUpgrade("Miniprestige", 23)}
+        },
+        12: {
+            name: "broken2",
+            title: "12",
+            cost: new Decimal(1e21),
+            description: "retaliate.",
+            unlocked() {return hasUpgrade("Miniprestige", 23)}
+        },
+        13: {
+            name: "broken3",
+            title: "13",
+            cost: new Decimal(2e26),
+            description: "retroact.",
+            unlocked() {return hasUpgrade("Miniprestige", 23)}
+        }
+    },
+    milestones:{
+        0: {
+            requirementDescription: "2500 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(2500)},
+            effectDescription: "Keep Broken Nanoprestige milestones and Nano challenges on Mini and Micro resets."
+        },
+        1: {
+            requirementDescription: "10,000 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(10000)},
+            effectDescription: "Keep Nanoprestige points on Micro resets."
+        },
+        2: {
+            requirementDescription: "100,000 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(100000)},
+            effectDescription: "Unlock a new Nanoprestige upgrade."
+        },
+        3: {
+            requirementDescription: "1,000,000 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(1000000)},
+            effectDescription: "Unlock a new Nanoprestige upgrade."
+        },
+        4: {
+            requirementDescription: "25,000,000 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(25000000)},
+            effectDescription: "Nanoprestiges boost Nanoprestige Point gain."
+        },
+        5: {
+            requirementDescription: "1,000,000,000 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(1e9)},
+            effectDescription: "Unlock a new Nanoprestige upgrade."
+        },
+        6: {
+            requirementDescription: "10,000,000,000 Nanoprestige Points",
+            done() {return player.BrokenNano.points.gte(1e10)},
+            effectDescription: "Unlock a new Nanoprestige upgrade."
+        },
+    },
+    achievements: {
+
+    },
+    tabFormat: {
+        "Upgrades": {
+            content: ["main-display", "resource-display", "milestones", "upgrades"],
+            unlocked() {return true}
+        },
+    },
+    doReset(layer) {
+        let keep = [];
+        if (layer.row == this.row) return
+        else if (layer == "Microprestige") {
+            if (hasMilestone("BrokenNano", 0)) keep.push("milestones")
+            if (hasMilestone("BrokenNano", 1)) keep.push("points")
+            if (hasMilestone("BrokenNano", 1)) keep.push("upgrades")
+            layerDataReset(this.layer, keep)
+        } else if (layer == "Miniprestige") {
+            if (hasMilestone("BrokenNano", 0)) keep.push("milestones")
+            layerDataReset(this.layer, keep)
+
+        } else if (layer == "Smallprestige") {
+            layerDataReset(this.layer, keep)
+
+
+        }
+    },
+    layerShown(){
+        return hasUpgrade("Microprestige", 42)}
 })

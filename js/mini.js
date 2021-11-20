@@ -18,11 +18,13 @@ addLayer("Miniprestige", {
     branches: ["Microprestige"],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-        
+        if (hasUpgrade("BrokenNano", 11)) mult = mult.div(buyableEffect("Nanoprestige", 31))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        mult = new Decimal(1)
+        if (hasUpgrade("Nanoprestige", 65)) mult = mult.times(1.2)
+        return new Decimal(mult)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -53,8 +55,28 @@ addLayer("Miniprestige", {
             description: "Every Miniprestige upgrade adds new Microprestige upgrades. Keep Microprestige upgrades on Miniprestige.",
             cost: new Decimal(3),
             unlocked() {return hasUpgrade("Miniprestige", 12)}
+        },
+        22: {
+            name: "Minirelax",
+            title: "Minirelax",
+            description: "You no longer lose Nanoprestige upgrades on Small resets. Nanoprestige buyable autobuyers unlocked.",
+            cost: new Decimal(4),
+            unlocked() {return hasAchievement("Smallprestige",11)}
+        },
+        13: {
+            name: "Miniforce",
+            title: "Miniforce",
+            description: "Square Microagression and Microstrawman. Break Nano by an additional 33%.",
+            cost: new Decimal(5),
+            unlocked() {return hasAchievement("Smallprestige", 11)}
+        },
+        23: {
+            name: "Minishark",
+            title: "Minishark",
+            description: "Unlock some Broken Nanoprestige upgrades. Divide Microprestige cost by 10.",
+            cost: new Decimal(7),
+            unlocked() {return hasUpgrade("Microprestige", 42)}
         }
-
     },
     achievements:{
         11: {
@@ -129,12 +151,12 @@ addLayer("Miniprestige", {
             done() {return player.Nanoprestige.points.gte(2000)},
             tooltip: "Get 2000 Nanoprestiges."
         },
-        43: {
+        44: {
             name: "Life, the Universe, and Everything",
             done() {return player.Microprestige.points.gte(42)},
             tooltip: "Get 42 Microprestiges."
         },
-        44: {
+        43: {
             name: "Infinity?",
             done() {return player.points.gte("1.79e308")},
             tooltip: "Get over 1.79e308 points."
@@ -170,5 +192,5 @@ addLayer("Miniprestige", {
 
     },
     layerShown(){
-        return player.Microprestige.points.gte(2) || player.Miniprestige.points.gte(1) || hasUpgrade("Miniprestige", 11)}
+        return player.Microprestige.best.gte(2) || player.Miniprestige.best.gte(1) || player. Smallprestige.best.gte(1)}
 })

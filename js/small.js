@@ -32,7 +32,7 @@ addLayer("Smallprestige", {
         11: {
             name: "Small world",
             title: "Small world",
-            description: "Miniprestige requirements are divided by 3, and Microprestige requirements are divided by 4.",
+            description: "Multiply Point gain based on Small prestiges",
             cost: new Decimal(1),
             effect() {
                 return Decimal.pow("1e25", player.Smallprestige.points.plus(1));
@@ -42,7 +42,55 @@ addLayer("Smallprestige", {
             },
         }
     },
-    
+    achievements: {
+        11: {
+            name: "Not so impossible",
+            done() {return player.Smallprestige.points.gte(1)},
+            tooltip: "Small Prestige for the first time. You can now get Broken layers."
+        },
+        12: {
+            name: "Mandatory feature unlock",
+            done() {return player.Nanoprestige.points.gte(20000)},
+            tooltip: "Get 20,000 Nanoprestiges. Unlocks new Micro upgrades."
+        },
+        13: {
+            name: "That kinda blew up",
+            done() {return player.Nanoprestige.points.gte(200000)},
+            tooltip: "Get 200,000 Nanoprestiges. Unlocks new Micro upgrades."
+
+        },
+        14: {
+            name: "That really blew up",
+            done() {return player.Nanoprestige.points.gte(2000000)},
+            tooltip: "Get 2,000,000 Nanoprestiges. Unlocks new Micro upgrades."
+
+        },
+        21: {
+            name: "Confused?",
+            done() {return player.Smallprestige.points.gte(2)},
+            tooltip: "Small Prestige for the second time."
+        }
+    },
+    tabFormat: {
+        "Upgrades": {
+            content: ["main-display", "resource-display", "prestige-button", "upgrades"],
+            unlocked() {return true}
+        },
+        "Buyables": {
+            content: ["main-display", "resource-display", "prestige-button", "buyables"],
+            unlocked() {return false}          
+        },
+        "Challenges": {
+            content: ["main-display", "resource-display", "prestige-button", "challenges"],
+            unlocked() {return false}
+
+        },
+        "Achievements": {
+            content: ["main-display", "resource-display", "achievements"],
+            unlocked() {return true}
+
+        }
+    },
     layerShown(){
-        return player.Miniprestige.points.gte(3) || player.Smallprestige.points.gte(1)}
+        return player.Miniprestige.best.gte(3) || player.Smallprestige.best.gte(1)}
 })

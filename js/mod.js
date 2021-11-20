@@ -1,7 +1,7 @@
 let modInfo = {
-	name: "Falling Mountain's PRESTIGE",
+	name: "Falling Mountain's Prestige",
 	id: "stolenIdea",
-	author: "Falling Mountain",
+	author: "Falling Mountain, original by Makiki99",
 	pointsName: "points",
 	modFiles: ["nano.js", "tree.js", "micro.js", "mini.js", "small.js", "achievements.js"],
 
@@ -13,11 +13,20 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2",
-	name: "A Small update",
+	num: "0.2.1",
+	name: "Is it inflation?",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.2.1</h3><br>
+		- New layer added, Broken Nanoprestige.<br>
+		- Current endgame at 2 Small Prestiges.<br>
+		- 5 Small achievements<br>
+		- 5 new Nano upgrades<br>
+		- 2 new Nano buyables<br>
+		- 7 new Micro upgrades<br>
+		- 3 new Mini upgrades<br>
+		- You can get a ton more Nanoprestiges now.<br>
 	<h3>v0.2</h3><br>
 		- Added new prestige layer, Small Prestiges.<br>
 		- Current endgame at 1 Small Prestige.<br>
@@ -63,6 +72,7 @@ function getPointGen() {
 	if (hasUpgrade("Nanoprestige", 32) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 24) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 45) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
+	if (hasUpgrade("Nanoprestige", 64) && !inChallenge("Nanoprestige", 21)) gain = gain.times(upgradeEffect("Nanoprestige", 64))
 	gain = gain.times(upgradeEffect("Microprestige", 11))
 	if (hasUpgrade("Microprestige", 11)) gain = gain.times(7)
 	if (hasUpgrade("Microprestige", 21)) gain = gain.times(upgradeEffect("Microprestige", 21))
@@ -71,6 +81,7 @@ function getPointGen() {
 	if (hasUpgrade("Microprestige", 31)) gain = gain.times(7)
 	if (hasUpgrade("Microprestige", 32)) gain = gain.times(2401)
 	if (hasUpgrade("Microprestige", 33)) gain = gain.times(upgradeEffect("Microprestige", 33))
+	if (hasUpgrade("Microprestige", 14)) gain = gain.times(buyableEffect("Microprestige", 11))
 	gain = gain.times(upgradeEffect("Miniprestige", 11))
 	if (hasUpgrade("Miniprestige", 11)) gain = gain.times(7)
 	if (hasUpgrade("Miniprestige", 12)) gain = gain.times(7)
@@ -79,6 +90,11 @@ function getPointGen() {
 	if (hasChallenge("Nanoprestige", 21)) gain = gain.pow(1.1)
 	if (hasUpgrade("Nanoprestige", 52) && !inChallenge("Nanoprestige", 21) && !inChallenge("Nanoprestige", 12)) gain = gain.pow(buyableEffect("Nanoprestige", 22))
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
+	if (gain.gte("1e10000")) {
+		gain = gain.div("1e10000")
+		gain = gain.pow(0.9)
+		gain = gain.mul("1e10000")
+	}
 	return gain
 }
 
@@ -92,7 +108,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.Smallprestige.points.gte(new Decimal(1))
+	return player.Smallprestige.points.gte(new Decimal(2))
 }
 
 
