@@ -29,24 +29,16 @@ addLayer("Smallprestige", {
     ],
     
     upgrades: {
-        11: {
-            name: "Small world",
-            title: "Small world",
-            description: "Multiply Point gain based on Small prestiges",
-            cost: new Decimal(1),
-            effect() {
-                return Decimal.pow("1e25", player.Smallprestige.points.plus(1));
-            },
-            unlocked() {
-                return player.Smallprestige.points.gte(1) || hasUpgrade("Smallprestige", 11)
-            },
-        }
+
     },
     achievements: {
         11: {
             name: "Not so impossible",
             done() {return player.Smallprestige.points.gte(1)},
-            tooltip: "Small Prestige for the first time. You can now get Broken layers."
+            tooltip: "Small Prestige for the first time. You can now get Broken layers. Also multiplies point gain more based on Smallprestiges.",
+            effect() {
+                return Decimal.pow("1e25", player.Smallprestige.points.plus(1));
+            }
         },
         12: {
             name: "Mandatory feature unlock",
@@ -68,7 +60,65 @@ addLayer("Smallprestige", {
         21: {
             name: "Confused?",
             done() {return player.Smallprestige.points.gte(2)},
-            tooltip: "Small Prestige for the second time."
+            tooltip: "Small Prestige for the second time. Multiplies Nanoprestige Point gain based on Miniprestiges.",
+            effect() {
+                return Decimal.pow("3", player.Miniprestige.points.plus(1));
+            },
+        },
+        23: {
+            name: "Mandatory 69 joke",
+            done() {return player.BrokenNano.points.gte(1e69)},
+            tooltip: "Get 1e69 Nanoprestige Points."
+        },
+        22: {
+            name: "Actually challenged?",
+            done() {return hasChallenge("Microprestige", 11)},
+            tooltip: "Complete Microblock."
+        },
+        24: {
+            name: "1.105",
+            done() {return hasUpgrade("Nanoprestige", 74)},
+            tooltip: "Get NanoIX"
+        },
+        31: {
+            name: "It got even worse",
+            done() {return player.Smallprestige.points.gte("3")},
+            tooltip: "Small prestige for the third time. Increases power of Nanoskewer, Nanopierce, and Nanomuscle, and you no longer lose upgrades on Small resets."
+        },
+        32: {
+            name: "Infinite Again",
+            done() {return player.BrokenNano.points.gte("1.79e308")},
+            tooltip: "Get infinite Nanoprestige points."
+        },
+        33: {
+            name: "One hundred thousand",
+            done() {return player.points.gte("1e150000")},
+            tooltip: "Get 1e150,000 points. Have you noticed the point softcaps yet?"
+        },
+        34: {
+            name: "The Nanoprestige Abyss",
+            done() {return hasUpgrade("Nanoprestige", 56)},
+            tooltip: "Purchase NanoXXV."
+        },
+        41: {
+            name: "It got worse again",
+            done() {return player.Smallprestige.points.gte("4")},
+            tooltip: "Small Prestige for the fourth time. You can now break Micro, and buy max Mini."
+        },
+        42: {
+            name: "Break it again",
+            done() {return player.BrokenMicro.points.gte(1)},
+            tooltip: "Break Microprestige"
+        },
+        43: {
+            name: "Jealousy",
+            done() {return player.Miniprestige.points.gte(600)},
+            tooltip: "Get 600 Miniprestiges."
+        },
+        44: {
+            name: "End of an era",
+            done() {return player.BrokenMicro.points.gte(1e9)},
+            tooltip: "Get 1e9 Microprestige Points."
         }
     },
     tabFormat: {
@@ -90,6 +140,15 @@ addLayer("Smallprestige", {
             unlocked() {return true}
 
         }
+    },
+    doReset(layer) {
+        let keep = [];
+        keep.push("achievements")
+        if (layer.row == this.row) return
+        else if (layer == "Partialprestige") {
+            layerDataReset(this.layer, keep)
+        }
+
     },
     layerShown(){
         return player.Miniprestige.best.gte(3) || player.Smallprestige.best.gte(1)}

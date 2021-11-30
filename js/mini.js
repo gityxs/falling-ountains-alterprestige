@@ -19,63 +19,65 @@ addLayer("Miniprestige", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasUpgrade("BrokenNano", 11)) mult = mult.div(buyableEffect("Nanoprestige", 31))
+        if (hasUpgrade("Microprestige", 51)) mult = mult.div(upgradeEffect("Microprestige", 51))
+        if (hasUpgrade("Microprestige", 52)) mult = mult.div(upgradeEffect("Nanoprestige", 91))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         mult = new Decimal(1)
         if (hasUpgrade("Nanoprestige", 65)) mult = mult.times(1.2)
+        if (hasChallenge("Microprestige", 11)) mult = mult.times(1.2)
+        if (hasUpgrade("Nanoprestige", 56)) mult = mult.times(1.47189)
         return new Decimal(mult)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "M", description: "M: Reset for Miniprestiges", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "m", description: "m: Reset for Miniprestiges", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     
     upgrades: {
+        
         11: {
-            name: "Minicut",
-            title: "Minicut",
-            description: "Microprestige requirements are divided by 2, and Point gain is multiplied by 7.",
-            cost: new Decimal(2),
-            effect() {
-                return player[this.layer].points.add(1);
-            },
-            unlocked() {return (player.Miniprestige.points.gte(1) || hasUpgrade("Miniprestige", 11))},
-        },
-        12: {
-            name: "Minilife",
-            title: "Minilife",
-            description: "Add 2 new Microprestige upgrades, and multiply Point gain by 7",
-            cost: new Decimal(2),
-            unlocked() {return hasUpgrade("Miniprestige", 11)}
-        },
-        21: {
-            name: "Ministab",
-            title: "Ministab",
-            description: "Every Miniprestige upgrade adds new Microprestige upgrades. Keep Microprestige upgrades on Miniprestige.",
-            cost: new Decimal(3),
-            unlocked() {return hasUpgrade("Miniprestige", 12)}
-        },
-        22: {
             name: "Minirelax",
             title: "Minirelax",
             description: "You no longer lose Nanoprestige upgrades on Small resets. Nanoprestige buyable autobuyers unlocked.",
             cost: new Decimal(4),
             unlocked() {return hasAchievement("Smallprestige",11)}
         },
-        13: {
+        12: {
             name: "Miniforce",
             title: "Miniforce",
             description: "Square Microagression and Microstrawman. Break Nano by an additional 33%.",
             cost: new Decimal(5),
             unlocked() {return hasAchievement("Smallprestige", 11)}
         },
-        23: {
+        13: {
             name: "Minishark",
             title: "Minishark",
             description: "Unlock some Broken Nanoprestige upgrades. Divide Microprestige cost by 10.",
             cost: new Decimal(7),
             unlocked() {return hasUpgrade("Microprestige", 42)}
+        },
+        21: {
+            name: "Miniplead",
+            title: "Miniplead",
+            description: "Autobuy Microprestige buyables, and unlock a new one.",
+            cost: new Decimal(17),
+            unlocked() {return hasAchievement("Smallprestige", 21)}
+        },
+        22: {
+            name: "Minirelief",
+            title: "Minirelief",
+            description: "Microprestige no longer resets anything, and its scaling is decreased.",
+            cost: new Decimal(71),
+            unlocked() {return hasAchievement("Smallprestige", 31)}
+        },
+        23: {
+            name: "Miniexplode",
+            title: "Miniexplode",
+            description: "MicroV also boosts the Nanoprestige Point gain exponent.",
+            cost: new Decimal(511),
+            unlocked() {return hasMilestone("BrokenMicro", 1)}
         }
     },
     achievements:{
@@ -123,19 +125,19 @@ addLayer("Miniprestige", {
         31: {
             name: "Put in the effort",
             done() {return player.Miniprestige.points.gte(2)},
-            tooltip: "Get 2 Miniprestiges."
+            tooltip: "Get 2 Miniprestiges. Multiplies point gain by 49, divides Microprestige requirement by 2, and adds new upgrades."
         },
         32: {
             name: "Effortless",
-            done() {return hasUpgrade("Miniprestige", 12)},
-            tooltip: "Buy the second Miniprestige upgrade."
-        },
-        33: {
-            name: "Not so micro",
             done() {return hasUpgrade("Microprestige", 22)},
-            tooltip: "Buy the fifth Microprestige upgrade."
+            tooltip: "Buy the fifth Microprestige upgrade. This achievement used to be harder to get, but I had to remove some Miniprestige upgrades."
         },
         34: {
+            name: "Not so micro",
+            done() {return hasUpgrade("Microprestige", 23)},
+            tooltip: "Buy the sixth Microprestige upgrade."
+        },
+        33: {
             name: "Slightly challenged",
             done() {return hasChallenge("Nanoprestige", 12)},
             tooltip: "Complete Muckraking"
@@ -143,7 +145,7 @@ addLayer("Miniprestige", {
         41: {
             name: "Prefacing conclusions",
             done() {return player.Miniprestige.points.gte(3)},
-            tooltip: "Get 3 Miniprestiges."
+            tooltip: "Get 3 Miniprestiges. You now keep Micro upgrades on Miniprestige."
 
         },
         42: {
@@ -161,6 +163,9 @@ addLayer("Miniprestige", {
             done() {return player.points.gte("1.79e308")},
             tooltip: "Get over 1.79e308 points."
         },
+    },
+    canBuyMax() {
+        return hasAchievement("Smallprestige", 41)
     },
     tabFormat: {
         "Upgrades": {
@@ -184,12 +189,15 @@ addLayer("Miniprestige", {
     },
     doReset(layer) {
         let keep = [];
+        keep.push("achievements")
         if (layer.row == this.row) return
         else if (layer == "Smallprestige") {
-            keep.push("achievements")
+            if (hasUpgrade("Smallprestige", 21)) keep.push("upgrades")
             layerDataReset(this.layer, keep)
         }
-
+        else if (layer == "Partialprestige") {
+            layerDataReset(this.layer, keep)
+        }
     },
     layerShown(){
         return player.Microprestige.best.gte(2) || player.Miniprestige.best.gte(1) || player. Smallprestige.best.gte(1)}

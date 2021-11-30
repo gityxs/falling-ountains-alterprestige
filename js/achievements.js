@@ -28,6 +28,11 @@ addLayer("Achievements", {
             done() {return player.Smallprestige.points.gte(1)},
             tooltip: "Small prestige for the first time. Makes Small Prestiges boost production."
         },
+        22: {
+            name: "Only grindier from here",
+            done() {return player.Partialprestige.points.gte(1)},
+            tooltip: "Partial prestige for the first time. Makes Partial Prestiges boost production."
+        },
 
     },
     tabFormat: {

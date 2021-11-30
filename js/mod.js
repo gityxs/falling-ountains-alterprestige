@@ -1,9 +1,9 @@
 let modInfo = {
-	name: "Falling Mountain's Prestige",
+	name: "Falling Mountain's AlterPrestige",
 	id: "stolenIdea",
 	author: "Falling Mountain, original by Makiki99",
 	pointsName: "points",
-	modFiles: ["nano.js", "tree.js", "micro.js", "mini.js", "small.js", "achievements.js"],
+	modFiles: ["nano.js", "tree.js", "micro.js", "mini.js", "small.js", "partial.js", "achievements.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -13,11 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2.1",
-	name: "Is it inflation?",
+	num: "0.3",
+	name: "A Partial Update",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.3</h3><br>
+		- New Partial Prestige and Broken Microprestige layers.<br>
+		- Current endgame at 1 Partial Prestige.<br>
+		- New achievements<br>
+		- New upgrades<br>
+		- Fixed a bug where the bar showing progress to Broken Nanoprestige could only reach 99%<br>
+		- Inflation... sorta?<br>
 	<h3>v0.2.1</h3><br>
 		- New layer added, Broken Nanoprestige.<br>
 		- Current endgame at 2 Small Prestiges.<br>
@@ -40,7 +47,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added first 3 prestige layers.<br>
 		- Current endgame at 3 Miniprestiges.`
 
-let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
+let winText = `You've done enough prestiging for now. Why not take a break?`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -82,19 +89,86 @@ function getPointGen() {
 	if (hasUpgrade("Microprestige", 32)) gain = gain.times(2401)
 	if (hasUpgrade("Microprestige", 33)) gain = gain.times(upgradeEffect("Microprestige", 33))
 	if (hasUpgrade("Microprestige", 14)) gain = gain.times(buyableEffect("Microprestige", 11))
-	gain = gain.times(upgradeEffect("Miniprestige", 11))
-	if (hasUpgrade("Miniprestige", 11)) gain = gain.times(7)
-	if (hasUpgrade("Miniprestige", 12)) gain = gain.times(7)
-	if (hasUpgrade("Smallprestige", 11)) gain = gain.times(upgradeEffect("Smallprestige", 11))
+	gain = gain.times(player.Miniprestige.points.plus(1))
+	if (hasAchievement("Miniprestige", 31)) gain = gain.times(7)
+	if (hasAchievement("Miniprestige", 31)) gain = gain.times(7)
+	if (hasAchievement("Smallprestige", 11)) gain = gain.times(Decimal.pow("1e25", player.Smallprestige.points.plus(1)))
 	if (hasChallenge("Nanoprestige", 11)) gain = gain.pow(1.1)
 	if (hasChallenge("Nanoprestige", 21)) gain = gain.pow(1.1)
 	if (hasUpgrade("Nanoprestige", 52) && !inChallenge("Nanoprestige", 21) && !inChallenge("Nanoprestige", 12)) gain = gain.pow(buyableEffect("Nanoprestige", 22))
+	if (hasUpgrade("Nanoprestige", 75)) gain = gain.pow(1.15)
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
 	if (gain.gte("1e10000")) {
 		gain = gain.div("1e10000")
 		gain = gain.pow(0.9)
 		gain = gain.mul("1e10000")
 	}
+	if (gain.gte("1e50000")) {
+		gain = gain.div("1e50000")
+		gain = gain.pow(0.5)
+		gain = gain.mul("1e50000")
+	}
+	if (gain.gte("1e100000")) {
+		gain = gain.div("1e100000")
+		gain = gain.pow(0.5)
+		gain = gain.mul("1e100000")
+	}
+	if (gain.gte("1e150000")) {
+		gain = gain.div("1e150000")
+		gain = gain.pow(0.5)
+		gain = gain.mul("1e150000")
+	}
+	if (gain.gte("1e200000")) {
+		gain = gain.div("1e200000")
+		gain = gain.pow(0.25)
+		gain = gain.mul("1e200000")
+	}
+	if (gain.gte("1e250000")) {
+		gain = gain.div("1e250000")
+		gain = gain.pow(0.25)
+		gain = gain.mul("1e250000")
+	}
+	if (gain.gte("1e300000")) {
+		gain = gain.div("1e300000")
+		gain = gain.pow(0.25)
+		gain = gain.mul("1e300000")
+	}
+	if (gain.gte("1e350000")) {
+		gain = gain.div("1e350000")
+		gain = gain.pow(0.25)
+		gain = gain.mul("1e350000")
+	}
+	if (gain.gte("1e400000")) {
+		gain = gain.div("1e400000")
+		gain = gain.pow(0.10)
+		gain = gain.mul("1e400000")
+	}
+	if (gain.gte("1e450000")) {
+		gain = gain.div("1e450000")
+		gain = gain.pow(0.10)
+		gain = gain.mul("1e450000")
+	}
+	if (gain.gte("1e500000")) {
+		gain = gain.div("1e500000")
+		gain = gain.pow(0.10)
+		gain = gain.mul("1e500000")
+	}
+	if (gain.gte("1e550000")) {
+		gain = gain.div("1e550000")
+		gain = gain.pow(0.10)
+		gain = gain.mul("1e550000")
+	}
+	if (gain.gte("1ee6")) {
+		gain = gain.div("1ee6")
+		gain = gain.pow(0.1)
+		gain = gain.mul("1ee6")
+	}
+	if (gain.gte("1e2.5e6")) {
+		gain = gain.div("1e2.5e6")
+		gain = gain.pow(0.01)
+		gain = gain.mul("1e2.5e6")
+	}
+	if (inChallenge("Microprestige", 11)) gain = gain.pow(0.01)
 	return gain
 }
 
@@ -104,11 +178,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
+
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.Smallprestige.points.gte(new Decimal(2))
+	return player.Partialprestige.points.gte(new Decimal(1))
 }
 
 
