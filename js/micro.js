@@ -7,7 +7,7 @@ addLayer("Microprestige", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#F5A9B8",
+    color: "#1B8045",
     requires: new Decimal(2), // Can be a function that takes requirement increases into account
     resource: "Microprestiges", // Name of prestige currency
     baseResource: "Nanoprestiges", // Name of resource prestige is based on
@@ -15,6 +15,15 @@ addLayer("Microprestige", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
     base: 2,
+    effect() {
+        return player.Microprestige.points.plus(1)
+    },
+    effectDescription() {
+        var desc;
+        desc = "which are multiplying Point gain by "
+        desc += format(tmp.Microprestige.effect) + "x"
+        return desc
+    },
     branches: ["Nanoprestige"],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -559,15 +568,15 @@ addLayer("BrokenMicro", {
     },
     row: 1, // Row the layer is in on the tree (0 is the first row)
     tabFormat: {
-        "Upgrades": {
-            content: ["main-display", "resource-display", ["bar", "break"], "milestones", "upgrades"],
-            unlocked() {return player.BrokenMicro.buyables[11].plus(player.BrokenMicro.buyables[12]).plus(player.BrokenMicro.buyables[21]).plus(player.BrokenMicro.buyables[22]).gte(100)}
-        },
         "Preparation": {
             content: ["main-display", ["bar", "break"], "buyables"],
             unlocked() {return player.BrokenMicro.buyables[11].plus(player.BrokenMicro.buyables[12]).plus(player.BrokenMicro.buyables[21]).plus(player.BrokenMicro.buyables[22]).lt(100)}
 
-        }
+        },
+        "Upgrades": {
+            content: ["main-display", "resource-display", ["bar", "break"], "milestones", "upgrades"],
+            unlocked() {return player.BrokenMicro.buyables[11].plus(player.BrokenMicro.buyables[12]).plus(player.BrokenMicro.buyables[21]).plus(player.BrokenMicro.buyables[22]).gte(100)}
+        },
     },
     bars: {
         break: {

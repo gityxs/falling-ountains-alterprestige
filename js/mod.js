@@ -68,7 +68,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(1)
-	gain = gain.times(upgradeEffect("Nanoprestige", 11))
+	gain = gain.times(tmp.Nanoprestige.effect)
 	if (hasUpgrade("Nanoprestige", 11) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 12) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 21) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
@@ -80,7 +80,7 @@ function getPointGen() {
 	if (hasUpgrade("Nanoprestige", 24) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 45) && !inChallenge("Nanoprestige", 21)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 64) && !inChallenge("Nanoprestige", 21)) gain = gain.times(upgradeEffect("Nanoprestige", 64))
-	gain = gain.times(upgradeEffect("Microprestige", 11))
+	gain = gain.times(tmp.Microprestige.effect)
 	if (hasUpgrade("Microprestige", 11)) gain = gain.times(7)
 	if (hasUpgrade("Microprestige", 21)) gain = gain.times(upgradeEffect("Microprestige", 21))
 	if (hasUpgrade("Microprestige", 22)) gain = gain.times(upgradeEffect("Microprestige", 22))

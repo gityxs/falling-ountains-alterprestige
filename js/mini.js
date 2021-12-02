@@ -15,6 +15,15 @@ addLayer("Miniprestige", {
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 1, // Prestige currency exponent
     base: 3,
+    effect() {
+        return player.Nanoprestige.points.plus(1)
+    },
+    effectDescription() {
+        var desc;
+        desc = "which are multiplying Point gain by "
+        desc += format(tmp.Microprestige.effect) + "x"
+        return desc
+    },
     branches: ["Microprestige"],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -200,5 +209,5 @@ addLayer("Miniprestige", {
         }
     },
     layerShown(){
-        return player.Microprestige.best.gte(2) || player.Miniprestige.best.gte(1) || player. Smallprestige.best.gte(1)}
+        return player.Microprestige.best.gte(1) || player.Miniprestige.best.gte(1) || player. Smallprestige.best.gte(1)}
 })
