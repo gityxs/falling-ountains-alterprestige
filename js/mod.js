@@ -13,19 +13,26 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "Game currently broken",
-	name: "BROKEN UPDATE",
+	num: "0.3b",
+	name: "Small hotfix",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
+	<h3>v0.3b</h3><br>
+		- Fixed upgrade problems from last hotfix.<br><br>
+	<h3>v0.3a</h3><br>
+		- Colors of Microprestige and Smallprestige changed to remove confusion with unpurchasable things<br>
+		- Broken Microprestige starts with subtab of "preparation" open.<br>
+		- Next update will deal with other complaints<br><br>
 	<h3>v0.3</h3><br>
 		- New Partial Prestige and Broken Microprestige layers.<br>
 		- Current endgame at 1 Partial Prestige.<br>
 		- New achievements<br>
 		- New upgrades<br>
 		- Fixed a bug where the bar showing progress to Broken Nanoprestige could only reach 99%<br>
-		- Inflation... sorta?<br>
-	<h3>v0.2.1</h3><br>
+		- Inflation... sorta?<br><br>
+	<h3>v0.2.1 (Indev)</h3><br>
 		- New layer added, Broken Nanoprestige.<br>
 		- Current endgame at 2 Small Prestiges.<br>
 		- 5 Small achievements<br>
@@ -33,8 +40,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 2 new Nano buyables<br>
 		- 7 new Micro upgrades<br>
 		- 3 new Mini upgrades<br>
-		- You can get a ton more Nanoprestiges now.<br>
-	<h3>v0.2</h3><br>
+		- You can get a ton more Nanoprestiges now.<br><br>
+	<h3>v0.2 (Indev)</h3><br>
 		- Added new prestige layer, Small Prestiges.<br>
 		- Current endgame at 1 Small Prestige.<br>
 		- 4 normal achievements<br>
@@ -42,8 +49,8 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 5 new Nano upgrades<br>
 		- 1 new Nano buyable<br>
 		- 3 new Micro upgrades<br>
-		- 1 new Mini upgrade<br>
-	<h3>v0.1</h3><br>
+		- 1 new Mini upgrade<br><br>
+	<h3>v0.1 (Indev)</h3><br>
 		- Added first 3 prestige layers.<br>
 		- Current endgame at 3 Miniprestiges.`
 
