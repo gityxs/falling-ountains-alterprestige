@@ -722,7 +722,7 @@ addLayer("Nanoprestige", {
             },
             effectDisplay() {return "^"+format(upgradeEffect("Nanoprestige", 95))}
         },
-        101: {
+        16: {
             name: "NanoXXI",
             title: "NanoXXI",
             description: "Multiply Nanoprestige gain by log2(Microprestiges)",
@@ -733,7 +733,7 @@ addLayer("Nanoprestige", {
             },
             effectDisplay() {return format(upgradeEffect("Nanoprestige", 16))+"x"}
         },
-        102: {
+        26: {
             name: "NanoXXII",
             title: "NanoXXII",
             description: "Multiply Nanoprestige gain by log10(Points)^1/2",
@@ -744,7 +744,7 @@ addLayer("Nanoprestige", {
             },
             effectDisplay() {return format(upgradeEffect("Nanoprestige", 26))+"x"}
         },
-        103: {
+        36: {
             name: "NanoXXIII",
             title: "NanoXXIII",
             description: "Nanoprestige points boost their own effect again, but more this time.",
@@ -755,7 +755,7 @@ addLayer("Nanoprestige", {
             },
             effectDisplay() {return "+"+format(upgradeEffect("Nanoprestige", 36))}
         },
-        104: {
+        46: {
             name: "NanoXXIV",
             title: "NanoXXIV",
             description: "Nanoprestige points boost their own gain again, but more this time.",
@@ -766,21 +766,21 @@ addLayer("Nanoprestige", {
             },
             effectDisplay() {return "^"+format(upgradeEffect("Nanoprestige", 46))}
         },
-        105: {
+        56: {
             name: "NanoXXV",
             title: "NanoXXV",
             description: "Reduce Miniprestige cost scaling.",
             unlocked() {return hasUpgrade("Microprestige", 52)},
             cost: new Decimal(2.39e39),
         },
-        111: {
+        66: {
             name: "NanoXXVI",
             title: "NanoXXVI",
             description: "Multiply Nanoprestige Point gain by 1e100",
             unlocked() {return hasUpgrade("Microprestige", 52)},
             cost: new Decimal(8.17e39)
         },
-        112: {
+        76: {
             name: "NanoXXVII",
             title: "NanoXXVII",
             description: "Multiply Nanoprestige Point gain based on Microprestiges. Hardcaps at 1e250x",
@@ -791,14 +791,14 @@ addLayer("Nanoprestige", {
             },
             effectDisplay() {return format(upgradeEffect("Nanoprestige", 76))+"x"}
         },
-        113: {
+        86: {
             name: "NanoXXVII",
             title: "NanoXXVII",
             description: "Slightly reduce Microprestige cost scaling",
             unlocked() {return hasUpgrade("Microprestige", 52)},
             cost: new Decimal(7.88e40)
         },
-        114: {
+        96: {
             name: "Nanofinale 3",
             title: "Nanofinale 3",
             description: "Multiply Nanoprestige Point gain by 1e50",
