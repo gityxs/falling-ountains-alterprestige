@@ -13,8 +13,8 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "A Partial Update",
+	num: "Game currently broken",
+	name: "BROKEN UPDATE",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
