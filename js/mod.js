@@ -13,19 +13,12 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-<<<<<<< Updated upstream
-	num: "0.3b",
-	name: "Small hotfix",
-=======
 	num: "0.3.1 Beta",
 	name: "The Great Rebalance, phase 1",
->>>>>>> Stashed changes
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
-<<<<<<< Updated upstream
-=======
 	<h3>v0.3.1</h3><br>
 		Pre-Smallprestige section of the Great Rebalance.<br>
 		- Upgrades have changed:<br>
@@ -36,7 +29,6 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 4th buyable increases the power of the 3rd buyable.<br>
 		- Challenges can now be completed multiple times for extra rewards.<br>
 		- 5th buyable increases the power of the 1st buyable.<br>
->>>>>>> Stashed changes
 	<h3>v0.3b</h3><br>
 		- Fixed upgrade problems from last hotfix.<br><br>
 	<h3>v0.3a</h3><br>
