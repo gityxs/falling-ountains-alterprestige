@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.1 Beta",
+	num: "0.3.1a Beta",
 	name: "The Great Rebalance, phase 1",
 }
 
