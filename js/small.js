@@ -7,7 +7,7 @@ addLayer("Smallprestige", {
 		points: new Decimal(0),
     }},
     color: "#1C4482",
-    requires: new Decimal(4), // Can be a function that takes requirement increases into account
+    requires: new Decimal(99999), // Can be a function that takes requirement increases into account
     resource: "Small prestiges", // Name of prestige currency
     baseResource: "Miniprestiges", // Name of resource prestige is based on
     baseAmount() {return player.Miniprestige.points}, // Get the current amount of baseResource
