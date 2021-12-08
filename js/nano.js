@@ -524,8 +524,13 @@ addLayer("Nanoprestige", {
             name: "Nanobalance",
             title: "Nanobalance",
             description: "Unlock a new Nanoprestige buyable.",
+<<<<<<< Updated upstream
             cost: new Decimal(3525),
             unlocked() {return hasUpgrade("Microprestige", 33)}
+=======
+            cost: new Decimal(4298),
+            unlocked() {return hasAchievement("Unlockers", 23)}
+>>>>>>> Stashed changes
 
         },
         53: {
@@ -809,15 +814,36 @@ addLayer("Nanoprestige", {
     challenges: {
         11: {
             name: "Nanoblock",
+<<<<<<< Updated upstream
             challengeDescription: "Point gain is raised to ^1/10.",
             goalDescription: "2e12 points",
             canComplete: function() {return player.points.gte(2e12)},
             rewardDescription: "Point gain is raised to ^11/10, and Nanoprestige cost is reduced.",
             unlocked() {return hasUpgrade("Nanoprestige", 44)}
+=======
+            challengeDescription: "Point gain is raised to ^0.1.",
+            goalDescription() {
+                var goal = new Decimal(10).pow(new Decimal(10).times(new Decimal(2).pow(new Decimal(challengeCompletions("Nanoprestige", 11)))))
+                return format(goal) + " points (" + challengeCompletions("Nanoprestige", 11) + "/5)"
+            },
+            canComplete() {
+                return player.points.gte(new Decimal(10).pow(new Decimal(10).times(new Decimal(2).pow(challengeCompletions("Nanoprestige", 11)))))
+            },
+            rewardDescription() {
+                if (challengeCompletions("Nanoprestige", 11) == 0) return "Raises Point gain to ^1.1, and increases the power of Nanoprestiges."
+                if (challengeCompletions("Nanoprestige", 11) == 1) return "Increases the power of Nanoprestiges again."
+                if (challengeCompletions("Nanoprestige", 11) == 2) return "Reduce Microprestige cost scaling by a small amount."
+                if (challengeCompletions("Nanoprestige", 11) == 3) return "Reduce buyable costs based on completions of this challenge."
+                if (challengeCompletions("Nanoprestige", 11) == 4) return "Increase the power of Nanoprestige yet again."
+            },
+            unlocked() {return hasUpgrade("Nanoprestige", 44)},
+            completionLimit: 5
+>>>>>>> Stashed changes
         },
         12: {
             name: "Muckraking",
             challengeDescription: "Buyables do not do anything.",
+<<<<<<< Updated upstream
             goalDescription: "3.33e33 points",
             canComplete:function() {return player.points.gte(3.33e33)},
             rewardDescription: "Buyable 13's power is increased.",
@@ -830,6 +856,39 @@ addLayer("Nanoprestige", {
             canComplete: function() {return player.points.gte("2e322")},
             rewardDescription: "Decrease Nanoprestige cost scaling significantly, and raise Point gain to ^1.1",
             unlocked() {return hasUpgrade("Nanoprestige", 54)}
+=======
+            goalDescription() {
+                var goal = new Decimal(1e57).pow(Decimal.pow(2, challengeCompletions("Nanoprestige", 12)))
+                return format(goal) + " points (" + challengeCompletions("Nanoprestige", 12) + "/5)"
+            },
+            canComplete() {return player.points.gte(new Decimal(1e57).pow(Decimal.pow(2, challengeCompletions("Nanoprestige", 12))))},
+            rewardDescription() {
+                if (challengeCompletions("Nanoprestige", 12) == 0) return "The first row of buyables has increased power. You keep Challenges on Micro resets."
+                if (challengeCompletions("Nanoprestige", 12) == 1) return "Multiply the power of Nanogains based on this challenge's completions."
+                if (challengeCompletions("Nanoprestige", 12) == 2) return "Multiply the power of Nanobuff based on this challenge's completions."
+                if (challengeCompletions("Nanoprestige", 12) == 3) return "Multiply the power of Nanomuscle based on this challenge's completions."
+                if (challengeCompletions("Nanoprestige", 12) == 4) return "All previous rewards are based on total challenge completions."
+            },
+            unlocked() {return hasUpgrade("Nanoprestige", 44)},
+            completionLimit: 5
+        },
+        21: {
+            name: "Nanocore",
+            challengeDescription: "Nanoblock, but Nanoprestige points have no effect.",
+            goalDescription() {
+                var goal = new Decimal(1e63).pow(Decimal.pow(2, challengeCompletions("Nanoprestige", 21)))
+                return format(goal) + " points (" + challengeCompletions("Nanoprestige", 21) + "/3)"
+            },
+            canComplete() {return player.points.gte(new Decimal(1e63).pow(Decimal.pow(2, challengeCompletions("Nanoprestige", 21))))},
+            rewardDescription() {
+                if (challengeCompletions("Nanoprestige", 21) == 0) return "Increase the power of the second row of Nano buyables."
+                if (challengeCompletions("Nanoprestige", 21) == 1) return "Multiply the power of Nanopierce based on this challenge's completions."
+                if (challengeCompletions("Nanoprestige", 21) == 2) return "Multiply the power of Nanophase based on this challenge's completions."
+            },
+            unlocked() {return hasUpgrade("Nanoprestige", 54)},
+            countsAs: [11],
+            completionLimit: 3
+>>>>>>> Stashed changes
         },
         22: {
             name: "Nanofuse",

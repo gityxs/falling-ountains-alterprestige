@@ -1,6 +1,6 @@
 let modInfo = {
 	name: "Falling Mountain's AlterPrestige",
-	id: "stolenIdea",
+	id: "alterPrestige",
 	author: "Falling Mountain, original by Makiki99",
 	pointsName: "points",
 	modFiles: ["nano.js", "tree.js", "micro.js", "mini.js", "small.js", "partial.js", "achievements.js"],
@@ -13,12 +13,30 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
+<<<<<<< Updated upstream
 	num: "0.3b",
 	name: "Small hotfix",
+=======
+	num: "0.3.1 Beta",
+	name: "The Great Rebalance, phase 1",
+>>>>>>> Stashed changes
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
+<<<<<<< Updated upstream
+=======
+	<h3>v0.3.1</h3><br>
+		Pre-Smallprestige section of the Great Rebalance.<br>
+		- Upgrades have changed:<br>
+		- Most have reduced costs, and changed effects.<br>
+		- Buyables now have much different cost scalings.<br>
+		- 2nd (Nano) buyable now increases in power every time you gain an upgrade.<br>
+		- 3rd buyable buffed.<br>
+		- 4th buyable increases the power of the 3rd buyable.<br>
+		- Challenges can now be completed multiple times for extra rewards.<br>
+		- 5th buyable increases the power of the 1st buyable.<br>
+>>>>>>> Stashed changes
 	<h3>v0.3b</h3><br>
 		- Fixed upgrade problems from last hotfix.<br><br>
 	<h3>v0.3a</h3><br>
@@ -54,7 +72,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added first 3 prestige layers.<br>
 		- Current endgame at 3 Miniprestiges.`
 
-let winText = `You've done enough prestiging for now. Why not take a break?`
+let winText = `You've done enough prestiging for now. Why not take a break? Oh yeah, and trying to "keep going" is broken.`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -185,7 +203,7 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-
+	"Current endgame at 4 Miniprestiges!", "Continuing past that is broken."
 ]
 
 // Determines when the game "ends"
