@@ -108,10 +108,44 @@ addLayer("Unlockers", {
         23: {
             name: "9",
             done() {return player.Microprestige.best.gte(40)},
-            tooltip: "40 Microprestiges<br>Unlocks:<br> μ upgrades 31,32,33"
+            tooltip: "40 Microprestiges<br>Unlocks:<br> N upgrades 51,52,53,54,55"
         },
-
-
+        24:{
+            name: "10",
+            done() {return player.Smallprestige.best.gte(1)},
+            tooltip: "1 Smallprestige<br>Unlocks:<br> M upgrades 11, 12"
+        },
+        25:{
+            name: "11",
+            done() {return player.Microprestige.best.gte(210)},
+            tooltip: "210 Microprestige<br>Unlocks:<br> u upgrade 24"
+        },
+        26:{
+            name: "12",
+            done() {return player.Miniprestige.best.gte(5)},
+            tooltip: "5 miniprestige<br>Unlocks:<br> u upgrade 34"
+        },
+        31:{
+            name: "13",
+            done() {return player.Microprestige.best.gte(358)},
+            tooltip: "358 Microprestige<br>Unlocks:<br> u upgrade 41"
+        },
+        32:{
+            name: "14",
+            done() {return player.Microprestige.best.gte(739)},
+            tooltip: "739 Microprestiges<br>Unlocks:<br> u upgrade 42, 43"
+        },
+        33:{
+            name: "15",
+            done() {return player.BrokenNano.best.gte(100)},
+            tooltip: "100 Nanoprestige Fragments<br>Unlocks:<br> N upgrade 61, 62, 63, 64, 65"
+        },
+        34:{
+            name: "16",
+            done() {return hasUpgrade("Miniprestige", 13)},
+            tooltip: "Mini upgrade 13. Unlocks BN upgrades 12, 13, 14, 15"
+        },
+        
     },
     tabFormat: {
         "Unlockers": {content: ["resource-display",  "clickables", "achievements",],}

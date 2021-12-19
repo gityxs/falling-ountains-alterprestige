@@ -13,12 +13,19 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.1a Beta",
-	name: "The Great Rebalance, phase 1",
+	num: "0.3.2 Beta",
+	name: "The Great Rebalance, phase 2",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
+	<h3>v0.3.2</h3><br>
+		Great Rebalance, part 2 (Small prestige #1)<br>
+		- Even more upgrades have changed
+		- Rebalanced challenges, now all of them have better requirements and rewards
+		- Broken Nanoprestige has also changed, and is now a buyable-based system
+		- Achievements have changed as well.
+		- Endgame at 16 Miniprestiges
 	<h3>v0.3.1</h3><br>
 		Pre-Smallprestige section of the Great Rebalance.<br>
 		- Upgrades have changed:<br>
@@ -96,7 +103,6 @@ function getPointGen() {
 	if (hasUpgrade("Nanoprestige", 32)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 24)) gain = gain.times(7)
 	if (hasUpgrade("Nanoprestige", 45)) gain = gain.times(7)
-	if (hasUpgrade("Nanoprestige", 64)) gain = gain.times(upgradeEffect("Nanoprestige", 64))
 	gain = gain.times(tmp.Microprestige.effect)
 	if (hasUpgrade("Microprestige", 11)) gain = gain.times(7)
 	if (hasUpgrade("Microprestige", 22)) gain = gain.times(upgradeEffect("Microprestige", 22))
@@ -106,83 +112,13 @@ function getPointGen() {
 	if (hasUpgrade("Microprestige", 33)) gain = gain.times(upgradeEffect("Microprestige", 33))
 	if (hasUpgrade("Microprestige", 14)) gain = gain.times(buyableEffect("Microprestige", 11))
 	gain = gain.times(tmp.Miniprestige.effect)
-	if (hasAchievement("Miniprestige", 31)) gain = gain.times(7)
-	if (hasAchievement("Miniprestige", 31)) gain = gain.times(7)
+	if (hasAchievement("Miniprestige", 21)) gain = gain.times(49)
 	if (hasAchievement("Smallprestige", 11)) gain = gain.times(Decimal.pow("1e25", player.Smallprestige.points.plus(1)))
 	if (hasChallenge("Nanoprestige", 11)) gain = gain.pow(1.1)
 	//if (hasChallenge("Nanoprestige", 21)) gain = gain.pow(1.1)
 	if (hasUpgrade("Nanoprestige", 75)) gain = gain.pow(1.15)
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
-	if (gain.gte("1e10000")) {
-		gain = gain.div("1e10000")
-		gain = gain.pow(0.9)
-		gain = gain.mul("1e10000")
-	}
-	if (gain.gte("1e50000")) {
-		gain = gain.div("1e50000")
-		gain = gain.pow(0.5)
-		gain = gain.mul("1e50000")
-	}
-	if (gain.gte("1e100000")) {
-		gain = gain.div("1e100000")
-		gain = gain.pow(0.5)
-		gain = gain.mul("1e100000")
-	}
-	if (gain.gte("1e150000")) {
-		gain = gain.div("1e150000")
-		gain = gain.pow(0.5)
-		gain = gain.mul("1e150000")
-	}
-	if (gain.gte("1e200000")) {
-		gain = gain.div("1e200000")
-		gain = gain.pow(0.25)
-		gain = gain.mul("1e200000")
-	}
-	if (gain.gte("1e250000")) {
-		gain = gain.div("1e250000")
-		gain = gain.pow(0.25)
-		gain = gain.mul("1e250000")
-	}
-	if (gain.gte("1e300000")) {
-		gain = gain.div("1e300000")
-		gain = gain.pow(0.25)
-		gain = gain.mul("1e300000")
-	}
-	if (gain.gte("1e350000")) {
-		gain = gain.div("1e350000")
-		gain = gain.pow(0.25)
-		gain = gain.mul("1e350000")
-	}
-	if (gain.gte("1e400000")) {
-		gain = gain.div("1e400000")
-		gain = gain.pow(0.10)
-		gain = gain.mul("1e400000")
-	}
-	if (gain.gte("1e450000")) {
-		gain = gain.div("1e450000")
-		gain = gain.pow(0.10)
-		gain = gain.mul("1e450000")
-	}
-	if (gain.gte("1e500000")) {
-		gain = gain.div("1e500000")
-		gain = gain.pow(0.10)
-		gain = gain.mul("1e500000")
-	}
-	if (gain.gte("1e550000")) {
-		gain = gain.div("1e550000")
-		gain = gain.pow(0.10)
-		gain = gain.mul("1e550000")
-	}
-	if (gain.gte("1ee6")) {
-		gain = gain.div("1ee6")
-		gain = gain.pow(0.1)
-		gain = gain.mul("1ee6")
-	}
-	if (gain.gte("1e2.5e6")) {
-		gain = gain.div("1e2.5e6")
-		gain = gain.pow(0.01)
-		gain = gain.mul("1e2.5e6")
-	}
+
 	if (inChallenge("Microprestige", 11)) gain = gain.pow(0.01)
 	return gain
 }
@@ -193,12 +129,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current endgame at 4 Miniprestiges!", "Continuing past that is broken."
+	"Current endgame at 16 Miniprestiges!", "Continuing past that is broken."
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.Miniprestige.points.gte(new Decimal(4))
+	return player.Miniprestige.points.gte(new Decimal(16))
 }
 
 
