@@ -21,11 +21,11 @@ let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
 	<h3>v0.3.2</h3><br>
 		Great Rebalance, part 2 (Small prestige #1)<br>
-		- Even more upgrades have changed
-		- Rebalanced challenges, now all of them have better requirements and rewards
-		- Broken Nanoprestige has also changed, and is now a buyable-based system
-		- Achievements have changed as well.
-		- Endgame at 16 Miniprestiges
+		- Even more upgrades have changed<br>
+		- Rebalanced challenges, now all of them have better requirements and rewards<br>
+		- Broken Nanoprestige has also changed, and is now a buyable-based system<br>
+		- Achievements have changed as well.<br>
+		- Endgame at 16 Miniprestiges<br><br>
 	<h3>v0.3.1</h3><br>
 		Pre-Smallprestige section of the Great Rebalance.<br>
 		- Upgrades have changed:<br>
@@ -35,7 +35,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 3rd buyable buffed.<br>
 		- 4th buyable increases the power of the 3rd buyable.<br>
 		- Challenges can now be completed multiple times for extra rewards.<br>
-		- 5th buyable increases the power of the 1st buyable.<br>
+		- 5th buyable increases the power of the 1st buyable.<br><br>
 	<h3>v0.3b</h3><br>
 		- Fixed upgrade problems from last hotfix.<br><br>
 	<h3>v0.3a</h3><br>
