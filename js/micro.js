@@ -369,7 +369,7 @@ addLayer("Microprestige", {
         44: {
             name: "Microplummet",
             title: "Microplummet",
-            description: "Nanoprestige effect multiplies Nanoprestige gain at a greatly reduced rate. Unlock a buyable.",
+            description: "Nanoprestige effect multiplies Nanoprestige gain at a greatly reduced rate.",
             cost: new Decimal(32250),
             unlocked() {return hasAchievement("Unlockers", 32)},
             effect() {

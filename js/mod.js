@@ -13,12 +13,18 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.2 Beta",
+	num: "0.3.2a Beta",
 	name: "The Great Rebalance, phase 2",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
+	<h3>v0.3.2a</h3><br>
+		- Clickables are now still hidden, you'll unlock them later
+		- Buyables now display costs at Infinity when you reach the cap (5000)
+		- Buyable cap decreased 5001 -> 5000
+		- Miniprestige achievement "Put in the effort" now actually gives the point bonus
+		- Fixed description for Microprestige upgrade 44
 	<h3>v0.3.2</h3><br>
 		Great Rebalance, part 2 (Small prestige #1)<br>
 		- Even more upgrades have changed<br>
@@ -111,7 +117,7 @@ function getPointGen() {
 	if (hasUpgrade("Microprestige", 33)) gain = gain.times(upgradeEffect("Microprestige", 33))
 	if (hasUpgrade("Microprestige", 14)) gain = gain.times(buyableEffect("Microprestige", 11))
 	gain = gain.times(tmp.Miniprestige.effect)
-	if (hasAchievement("Miniprestige", 21)) gain = gain.times(49)
+	if (hasAchievement("Miniprestige", 31)) gain = gain.times(49)
 	if (hasAchievement("Smallprestige", 11)) gain = gain.times(Decimal.pow("1e25", player.Smallprestige.points.plus(1)))
 	if (hasChallenge("Nanoprestige", 11)) gain = gain.pow(1.1)
 	//if (hasChallenge("Nanoprestige", 21)) gain = gain.pow(1.1)

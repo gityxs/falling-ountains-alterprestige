@@ -95,6 +95,7 @@ addLayer("Nanoprestige", {
                 if (hasUpgrade("Nanoprestige", 14)) cost = cost.div(2)
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 12)) cost = cost.div(buyableEffect("Nanoprestige", 13))
                 if (challengeCompletions("Nanoprestige", 11) >= 4) cost = cost.div(Decimal.pow(1.25, challengeCompletions("Nanoprestige", 11)))
+                if (player.Nanoprestige.buyables[11].gte(5000)) cost = Decimal.dInf
                 return Decimal.ceil(cost)
             },
             title() { return "Nanobuff"},
@@ -122,7 +123,7 @@ addLayer("Nanoprestige", {
                 return display;
             },
             canAfford() { 
-                return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[11].lte(5000))
+                return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[11].lt(5000))
             },
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost(player.Nanoprestige.buyables[11]))
@@ -158,6 +159,7 @@ addLayer("Nanoprestige", {
                 if (hasUpgrade("Nanoprestige", 14)) cost = cost.div(2)
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
                 if (challengeCompletions("Nanoprestige", 11) >= 4) cost = cost.div(Decimal.pow(1.25, challengeCompletions("Nanoprestige", 11)))
+                if (player.Nanoprestige.buyables[12].gte(5000)) cost = Decimal.dInf
                 return Decimal.ceil(cost)
             
             },
@@ -178,7 +180,7 @@ addLayer("Nanoprestige", {
                 display += " 70 + 15*1.25^(x^1.1)"
                 return display;
             },
-            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[12].lte(5000))},
+            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[12].lt(5000))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -211,6 +213,7 @@ addLayer("Nanoprestige", {
             cost(x) {
                 var cost = new Decimal("150").times(Decimal.pow(1.5, x.pow(1.1)))
                 if (challengeCompletions("Nanoprestige", 11) >= 4) cost = cost.div(Decimal.pow(1.25, challengeCompletions("Nanoprestige", 11)))
+                if (player.Nanoprestige.buyables[13].gte(5000)) cost = Decimal.dInf
                 return cost
             
             },
@@ -233,7 +236,7 @@ addLayer("Nanoprestige", {
                 if (hasUpgrade("Microprestige", 34) && player.Nanoprestige.corruption >= 0.9) display = "ZmZvZWFpc0JTTFdIZmU"
                 return display;
             },
-            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[13].lte(5000))},
+            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[13].lt(5000))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -264,6 +267,7 @@ addLayer("Nanoprestige", {
                 cost = new Decimal("650").plus(Decimal.pow("1.5", Decimal.pow(x, 1.3)))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
                 if (challengeCompletions("Nanoprestige", 11) >= 4) cost = cost.div(Decimal.pow(1.25, challengeCompletions("Nanoprestige", 11)))
+                if (player.Nanoprestige.buyables[21].gte(5000)) cost = Decimal.dInf
                 return Decimal.ceil(cost)
                 
             },
@@ -280,7 +284,7 @@ addLayer("Nanoprestige", {
                 display += "Cost formula: " + costBase
                 return display;
             },
-            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[21].lte(5000))},
+            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[21].lt(5000))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -307,6 +311,7 @@ addLayer("Nanoprestige", {
                 cost = new Decimal("3.5e7").plus(new Decimal("1e6").times(Decimal.pow(1.25, x.pow(1.2))))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
                 if (challengeCompletions("Nanoprestige", 11) >= 4) cost = cost.div(Decimal.pow(1.25, challengeCompletions("Nanoprestige", 11)))
+                if (player.Nanoprestige.buyables[22].gte(5000)) cost = Decimal.dInf
                 return cost
             },
             display() {
@@ -317,7 +322,7 @@ addLayer("Nanoprestige", {
                 display += "Cost scaling: 3.5e7 + 1e6*1.25^(x^1.2)"
                 return display;
             },
-            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[22].lte(5000))},
+            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[22].lt(5000))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -341,6 +346,7 @@ addLayer("Nanoprestige", {
                 var cost;
                 cost = new Decimal("1e40").plus(new Decimal("1e40").times(Decimal.pow(3, x.pow(1.5))))
                 if (hasUpgrade("Nanoprestige", 34) && !inChallenge("Nanoprestige", 11)) cost = cost.div(buyableEffect("Nanoprestige", 13))
+                if (player.Nanoprestige.buyables[23].gte(5000)) cost = Decimal.dInf
                 return cost
             },
             display() {
@@ -349,7 +355,7 @@ addLayer("Nanoprestige", {
                 display += "Cost: "+format(this.cost()) + " Nanoprestiges."
                 return display;
             },
-            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[23].lte(5000))},
+            canAfford() {return (player[this.layer].points.gte(this.cost()) && player.Nanoprestige.buyables[23].lt(5000))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
@@ -934,6 +940,7 @@ addLayer("Nanoprestige", {
         },
 
     },
+/*
     clickables: {
         11: {
             title: "Hide the top row",
@@ -953,6 +960,7 @@ addLayer("Nanoprestige", {
         }
 
     },
+    */
     autoPrestige() {
         return hasUpgrade("Nanoprestige", 23)
     },
@@ -1071,7 +1079,8 @@ addLayer("BrokenNano", {
         var desc;
         desc = "which is giving a Boost Constant of "
         desc += format(tmp.BrokenNano.effect)
-        desc += ". <br>This serves as the basis for all of this layer's buyables."
+        desc += ". <br>This serves as the basis for all of this layer's buyables.<br>"
+        desc += "You generate Fragments when you have over 700,000 Nanoprestiges."
         return desc
     },
     branches: ["Nanoprestige"],
