@@ -24,7 +24,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Buyables now display costs at Infinity when you reach the cap (5000)<br>
 		- Buyable cap decreased 5001 -> 5000<br>
 		- Miniprestige achievement "Put in the effort" now actually gives the point bonus<br>
-		- Fixed description for Microprestige upgrade 44<br>
+		- Fixed description for Microprestige upgrade 44<br><br>
 	<h3>v0.3.2</h3><br>
 		Great Rebalance, part 2 (Small prestige #1)<br>
 		- Even more upgrades have changed<br>
