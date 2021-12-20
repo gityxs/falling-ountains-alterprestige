@@ -20,11 +20,11 @@ let VERSION = {
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
 	<h3>v0.3.2a</h3><br>
-		- Clickables are now still hidden, you'll unlock them later
-		- Buyables now display costs at Infinity when you reach the cap (5000)
-		- Buyable cap decreased 5001 -> 5000
-		- Miniprestige achievement "Put in the effort" now actually gives the point bonus
-		- Fixed description for Microprestige upgrade 44
+		- Clickables are now still hidden, you'll unlock them later<br>
+		- Buyables now display costs at Infinity when you reach the cap (5000)<br>
+		- Buyable cap decreased 5001 -> 5000<br>
+		- Miniprestige achievement "Put in the effort" now actually gives the point bonus<br>
+		- Fixed description for Microprestige upgrade 44<br>
 	<h3>v0.3.2</h3><br>
 		Great Rebalance, part 2 (Small prestige #1)<br>
 		- Even more upgrades have changed<br>
