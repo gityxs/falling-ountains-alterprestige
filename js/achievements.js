@@ -17,27 +17,68 @@ addLayer("Achievements", {
         11: {
             name: "To begin",
             done() {return player.Nanoprestige.points.gte(1)},
-            tooltip: "Nanoprestige for the first time. Makes Nanoprestiges boost production."
+            tooltip: "Nanoprestige for the first time. Makes Nanoprestiges boost production.",
+            image() {
+                if (hasAchievement("Achievements", 11)) return "js/images/Achievements/ach11.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         12: {
             name: "A new layer already?",
             done() {return player.Microprestige.points.gte(1)},
-            tooltip: "Microprestige for the first time. Makes Microprestiges boost production."
+            tooltip: "Microprestige for the first time. Makes Microprestiges boost production.",
+            image() {
+                if (hasAchievement("Achievements", 12)) return "js/images/Achievements/ach12.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         13: {
             name: "Slowdown",
             done() {return player.Miniprestige.points.gte(1)},
-            tooltip: "Miniprestige for the first time. Makes Miniprestiges boost production."
+            tooltip: "Miniprestige for the first time. Makes Miniprestiges boost production.",
+            image() {
+                if (hasAchievement("Achievements", 13)) return "js/images/Achievements/ach13.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         21: {
             name: "Impossible?",
             done() {return player.Smallprestige.points.gte(1)},
-            tooltip: "Small prestige for the first time. Makes Small Prestiges boost production."
+            tooltip: "Small prestige for the first time. Makes Small Prestiges boost production.",
+            image() {
+                if (hasAchievement("Achievements", 21)) return "js/images/Achievements/ach21.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         22: {
             name: "Only grindier from here",
             done() {return player.Partialprestige.points.gte(1)},
             tooltip: "Partial prestige for the first time. Makes Partial Prestiges boost production."
+            ,
+            image() {
+                if (hasAchievement("Achievements", 22)) return "js/images/Achievements/ach22.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
 
     },
@@ -66,84 +107,270 @@ addLayer("Unlockers", {
     },
     achievements: {
         11: {
-            name: "1",
             done() {return player.Miniprestige.best.gte(1)},
-            tooltip: "1 Miniprestige<br>Unlocks:<br> N upgrades 11, 12, 21, 22<br> μ upgrades 11, 12, 13"
+            tooltip: "1 Miniprestige<br>Unlocks:<br> N upgrades 11, 12, 21, 22<br> μ upgrades 11, 12, 13",
+            image() {
+                if (hasAchievement("Unlockers", 11)) return "js/images/Unlockers/unl11.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         12: {
-            name: "2",
             done() {return player.Microprestige.best.gte(5)},
-            tooltip: "5 Microprestiges<br>Unlocks:<br> N upgrades 13, 23"
+            tooltip: "5 Microprestiges<br>Unlocks:<br> N upgrades 13, 23",
+            image() {
+                if (hasAchievement("Unlockers", 12)) return "js/images/Unlockers/unl12.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         13: {
-            name: "3",
             done() {return player.Nanoprestige.best.gte(55)},
-            tooltip: "55 Nanoprestiges<br>Unlocks:<br> N upgrade 31, 32, 33 μ upgrade 21,"
+            tooltip: "55 Nanoprestiges<br>Unlocks:<br> N upgrade 31, 32, 33 μ upgrade 21,",
+            image() {
+                if (hasAchievement("Unlockers", 13)) return "js/images/Unlockers/unl13.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         14: {
-            name: "4",
             done() {return player.Microprestige.best.gte(7)},
-            tooltip: "7 Microprestiges<br>Unlocks:<br> N upgrade 14,24,34"
+            tooltip: "7 Microprestiges<br>Unlocks:<br> N upgrade 14,24,34",
+            image() {
+                if (hasAchievement("Unlockers", 14)) return "js/images/Unlockers/unl14.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         15: {
-            name: "5",
             done() {return player.Miniprestige.best.gte(2)},
-            tooltip: "2 Miniprestiges<br>Unlocks:<br> μ upgrades 22,23"
+            tooltip: "2 Miniprestiges<br>Unlocks:<br> μ upgrades 22,23",
+            image() {
+                if (hasAchievement("Unlockers", 15)) return "js/images/Unlockers/unl15.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         16: {
-            name: "6",
             done() {return player.Microprestige.best.gte(10)},
-            tooltip: "10 Microprestiges<br>Unlocks:<br> N upgrades 41,42,43,44"
+            tooltip: "10 Microprestiges<br>Unlocks:<br> N upgrades 41,42,43,44",
+            image() {
+                if (hasAchievement("Unlockers", 16)) return "js/images/Unlockers/unl16.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         21: {
-            name: "7",
             done() {return player.Microprestige.best.gte(17)},
-            tooltip: "17 Microprestiges<br>Unlocks:<br> N upgrades 15,25,35,45"
+            tooltip: "17 Microprestiges<br>Unlocks:<br> N upgrades 15,25,35,45",
+            image() {
+                if (hasAchievement("Unlockers", 21)) return "js/images/Unlockers/unl21.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         22: {
-            name: "8",
             done() {return player.Miniprestige.best.gte(3)},
-            tooltip: "3 Miniprestiges<br>Unlocks:<br> μ upgrades 31,32,33"
+            tooltip: "3 Miniprestiges<br>Unlocks:<br> μ upgrades 31,32,33",
+            image() {
+                if (hasAchievement("Unlockers", 22)) return "js/images/Unlockers/unl22.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         23: {
-            name: "9",
             done() {return player.Microprestige.best.gte(40)},
-            tooltip: "40 Microprestiges<br>Unlocks:<br> N upgrades 51,52,53,54,55"
+            tooltip: "40 Microprestiges<br>Unlocks:<br> N upgrades 51,52,53,54,55",
+            image() {
+                if (hasAchievement("Unlockers", 23)) return "js/images/Unlockers/unl23.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         24:{
-            name: "10",
             done() {return player.Smallprestige.best.gte(1)},
-            tooltip: "1 Smallprestige<br>Unlocks:<br> M upgrades 11, 12"
+            tooltip: "1 Smallprestige<br>Unlocks:<br> M upgrades 11, 12",
+            image() {
+                if (hasAchievement("Unlockers", 24)) return "js/images/Unlockers/unl24.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         25:{
-            name: "11",
             done() {return player.Microprestige.best.gte(210)},
-            tooltip: "210 Microprestige<br>Unlocks:<br> u upgrade 24"
+            tooltip: "210 Microprestige<br>Unlocks:<br> u upgrade 24",
+            image() {
+                if (hasAchievement("Unlockers", 25)) return "js/images/Unlockers/unl25.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         26:{
-            name: "12",
             done() {return player.Miniprestige.best.gte(5)},
-            tooltip: "5 miniprestige<br>Unlocks:<br> u upgrade 34"
+            tooltip: "5 miniprestige<br>Unlocks:<br> u upgrade 34",
+            image() {
+                if (hasAchievement("Unlockers", 26)) return "js/images/Unlockers/unl26.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         31:{
-            name: "13",
             done() {return player.Microprestige.best.gte(358)},
-            tooltip: "358 Microprestige<br>Unlocks:<br> u upgrade 41"
+            tooltip: "358 Microprestige<br>Unlocks:<br> u upgrade 41",
+            image() {
+                if (hasAchievement("Unlockers", 31)) return "js/images/Unlockers/unl31.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         32:{
-            name: "14",
             done() {return player.Microprestige.best.gte(739)},
-            tooltip: "739 Microprestiges<br>Unlocks:<br> u upgrade 42, 43"
+            tooltip: "739 Microprestiges<br>Unlocks:<br> u upgrade 42, 43",
+            image() {
+                if (hasAchievement("Unlockers", 32)) return "js/images/Unlockers/unl32.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         33:{
-            name: "15",
             done() {return player.BrokenNano.best.gte(100)},
-            tooltip: "100 Nanoprestige Fragments<br>Unlocks:<br> N upgrade 61, 62, 63, 64, 65"
+            tooltip: "100 Nanoprestige Fragments<br>Unlocks:<br> N upgrade 61, 62, 63, 64, 65",
+            image() {
+                if (hasAchievement("Unlockers", 33)) return "js/images/Unlockers/unl33.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         34:{
-            name: "16",
             done() {return hasUpgrade("Miniprestige", 13)},
-            tooltip: "Mini upgrade 13. Unlocks BN upgrades 12, 13, 14, 15"
+            tooltip: "Mini upgrade 13. Unlocks BN upgrades 12, 13, 14, 15",
+            image() {
+                if (hasAchievement("Unlockers", 34)) return "js/images/Unlockers/unl34.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+        },
+        35: {
+            done() {return player.Smallprestige.best.gte(2)},
+            tooltip: "2 Smallprestige. Unlocks:<br> N upgrade 71, 72, 73, 74, 75<br> u upgrade 15, 25, 35, 45 <br> M upgrade 21, 22, 23",
+            image() {
+                if (hasAchievement("Unlockers", 35)) return "js/images/Unlockers/unl35.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+        },
+        36: {
+            done() {return player.Smallprestige.best.gte("3")},
+            tooltip: "3 Smallprestige. Unlocks:<br> BN upgrade 21, 22, 23, 24, 25",
+            image() {
+                if (hasAchievement("Unlockers", 36)) return "js/images/Unlockers/unl36.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+
+        },
+        41: {
+            done() {return hasMilestone("BNCommunal", 4)},
+            tooltip: "9 Communals. Unlocks:<br> N upgrade 81, 82, 83, 84, 85",
+            image() {
+                if (hasAchievement("Unlockers", 41)) return "js/images/Unlockers/unl41.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+
+        },
+        42: {
+            done() {return hasUpgrade("Nanoprestige", 13)},
+            tooltip: "Nano upgrade 13. Shows Buyable menu on Nanoprestige.",
+            image() {
+                if (hasAchievement("Unlockers", 42)) return "js/images/Unlockers/unl42.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+        },
+        43: {
+            done() {return hasUpgrade("Nanoprestige", 44)},
+            tooltip: "Nano upgrade 44. Shows Challenge menu on Nanoprestige.",
+            image() {
+                if (hasAchievement("Unlockers", 43)) return "js/images/Unlockers/unl43.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+        },
+        44: {
+            done() {return hasUpgrade("Microprestige", 14)},
+            tooltip: "Micro upgrade 14. Shows Buyable menu on Microprestige.",
+            image() {
+                if (hasAchievement("Unlockers", 44)) return "js/images/Unlockers/unl44.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
         },
         
     },

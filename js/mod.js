@@ -13,12 +13,23 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.2a Beta",
-	name: "The Great Rebalance, phase 2",
+	num: "0.3.3 Beta",
+	name: "The Great Rebalance, phase 3",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
+
+	<h3>v0.3.3</h3><br>
+		Great Rebalance, part 3<br>
+		- Added a new layer, Communals<br>
+		- Extended endgame to 5 Smallprestiges<br>
+		- New upgrades in most layers<br>
+		- Fixed bug causing Microprestige upgrades and Miniprestige upgrades to hide when you have 0 Miniprestiges<br>
+		- Fixed bug hiding Buyable and Challenge menus when you didn't have specific upgrades<br>
+		- When starting a new game, all nodes except Nano and Mini are locked<br>
+		- Added achievement images (woohoo)<br>
+		- other stuff probably<br><br>
 	<h3>v0.3.2a</h3><br>
 		- Clickables are now still hidden, you'll unlock them later<br>
 		- Buyables now display costs at Infinity when you reach the cap (5000)<br>
@@ -77,7 +88,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added first 3 prestige layers.<br>
 		- Current endgame at 3 Miniprestiges.`
 
-let winText = `You've done enough prestiging for now. Why not take a break? Oh yeah, and trying to "keep going" is broken.`
+let winText = `You've done enough prestiging for now. Why not take a break?`
 
 // If you add new functions anywhere inside of a layer, and those functions have an effect when called, add them here.
 // (The ones here are examples, all official functions are already taken care of)
@@ -120,7 +131,6 @@ function getPointGen() {
 	if (hasAchievement("Miniprestige", 31)) gain = gain.times(49)
 	if (hasAchievement("Smallprestige", 11)) gain = gain.times(Decimal.pow("1e25", player.Smallprestige.points.plus(1)))
 	if (hasChallenge("Nanoprestige", 11)) gain = gain.pow(1.1)
-	//if (hasChallenge("Nanoprestige", 21)) gain = gain.pow(1.1)
 	if (hasUpgrade("Nanoprestige", 75)) gain = gain.pow(1.15)
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
 
@@ -134,12 +144,12 @@ function addedPlayerData() { return {
 
 // Display extra things at the top of the page
 var displayThings = [
-	"Current endgame at 16 Miniprestiges!", "Continuing past that is broken."
+	"Current endgame at 5 Smallprestiges!", "If things feel slow, check your challenges!"
 ]
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.Miniprestige.points.gte(new Decimal(16))
+	return player.Smallprestige.points.gte(new Decimal(5))
 }
 
 
@@ -159,5 +169,6 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
+	
 
 }

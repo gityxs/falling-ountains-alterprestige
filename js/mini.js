@@ -4,7 +4,7 @@ addLayer("Miniprestige", {
     symbol: "M", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
-        unlocked: true,
+        unlocked: false,
 		points: new Decimal(0),
     }},
     color: "#FFFFFF",
@@ -29,6 +29,7 @@ addLayer("Miniprestige", {
         mult = new Decimal(1)
         if (hasUpgrade("Microprestige", 51)) mult = mult.div(upgradeEffect("Microprestige", 51))
         if (hasUpgrade("Microprestige", 52)) mult = mult.div(upgradeEffect("Nanoprestige", 91))
+        if (hasUpgrade("Miniprestige", 21)) mult = mult.div(buyableEffect("Microprestige", 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -38,7 +39,7 @@ addLayer("Miniprestige", {
     },
     directMult() {
         mult = new Decimal(1)
-        if (hasMilestone("BNCapital", 0)) mult = mult.times(new Decimal(1.2).pow(player.BNCapital.points))
+        if (hasMilestone("BNCapital", 0)) mult = mult.times(Decimal.min(2, new Decimal(1.22).pow(player.BNCapital.points)))
         return mult
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
@@ -72,95 +73,199 @@ addLayer("Miniprestige", {
             name: "Miniplead",
             title: "Miniplead",
             description: "Autobuy Microprestige buyables, and unlock a new one.",
-            cost: new Decimal(17),
-            unlocked() {return hasAchievement("Smallprestige", 21)}
+            cost: new Decimal(32),
+            unlocked() {return hasAchievement("Unlockers", 35)}
         },
         22: {
             name: "Minirelief",
             title: "Minirelief",
-            description: "Microprestige no longer resets anything, and its scaling is decreased.",
-            cost: new Decimal(71),
-            unlocked() {return hasAchievement("Smallprestige", 31)}
+            description: "Capitals exponentiate multiplier to Nanoprestige gain.",
+            effect() {
+                return new Decimal(1).plus(new Decimal(0.01).times(player.BNCapital.points))
+            },
+            effectDisplay() {return "^"+format(upgradeEffect("Miniprestige", 22))},
+            cost: new Decimal(265),
+            unlocked() {return hasAchievement("Unlockers", 35)}
         },
         23: {
             name: "Miniexplode",
             title: "Miniexplode",
-            description: "MicroV also boosts the Nanoprestige Point gain exponent.",
-            cost: new Decimal(511),
-            unlocked() {return hasMilestone("BrokenMicro", 1)}
+            description: "Boost Constant is multiplied based on communals & time since last Communal.",
+            effect() {
+                return new Decimal(player.BNCommunal.resetTime).plus(1).pow(new Decimal(1).plus(player.BNCommunal.points))
+            },
+            effectDisplay() {return format(upgradeEffect("Miniprestige", 23))+"x"},
+            cost: new Decimal(418),
+            unlocked() {return hasAchievement("Unlockers", 35)}
         }
     },
     achievements:{
         11: {
             name: "To begin (for real this time)",
             done() {return player.Miniprestige.points.gte(1)},
-            tooltip: "Miniprestige for the first time. Unlocks the Upgrade subtab on all layers."
+            tooltip: "Miniprestige for the first time. Unlocks the Upgrade subtab on all layers.",
+            image() {
+                if (hasAchievement("Miniprestige", 11)) return "js/images/Miniprestige/mini11.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         12: {
             name: "Dynamic Upgraing",
             done() {return player.Microprestige.points.gte(6)},
-            tooltip: "Get 6 Microprestiges. Microprestige no longer resets Nanoprestige upgrades."
+            tooltip: "Get 6 Microprestiges. Microprestige no longer resets Nanoprestige upgrades.",
+            image() {
+                if (hasAchievement("Miniprestige", 12)) return "js/images/Miniprestige/mini12.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         13: {
             name: "Buy, buy again",
             done() {return hasUpgrade("Nanoprestige", 33)},
-            tooltip: "Unlock 2 buyables."
+            tooltip: "Unlock 2 buyables.",
+            image() {
+                if (hasAchievement("Miniprestige", 13)) return "js/images/Miniprestige/mini13.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         14: {
             name: "Close enough for comfort",
             done() {return player.Microprestige.points.gte(8)},
-            tooltip: "Get 8 Microprestiges."
+            tooltip: "Get 8 Microprestiges.",
+            image() {
+                if (hasAchievement("Miniprestige", 14)) return "js/images/Miniprestige/mini14.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         31: {
             name: "Put in the effort",
             done() {return player.Miniprestige.points.gte(2)},
-            tooltip: "Get 2 Miniprestiges. Multiplies point gain by 49, divides Microprestige requirement by 2, and adds new upgrades."
+            tooltip: "Get 2 Miniprestiges. Multiplies point gain by 49, divides Microprestige requirement by 2, and adds new upgrades.",
+            image() {
+                if (hasAchievement("Miniprestige", 31)) return "js/images/Miniprestige/mini31.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         32: {
             name: "Stacked",
             done() {return player.Nanoprestige.buyables[21].gte(1)},
-            tooltip: "Purchase Nanopierce at least once."
+            tooltip: "Purchase Nanopierce at least once.",
+            image() {
+                if (hasAchievement("Miniprestige", 32)) return "js/images/Miniprestige/mini32.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         33: {
             name: "Gilded Age",
             done() {return hasChallenge("Nanoprestige", 12)},
-            tooltip: "Complete Muckraking for the first time."
+            tooltip: "Complete Muckraking for the first time.",
+            image() {
+                if (hasAchievement("Miniprestige", 33)) return "js/images/Miniprestige/mini33.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         34: {
             name: "Shen Bapiro",
             done() {return hasUpgrade("Microprestige", 23)},
-            tooltip: "Purchase Microstrawman."
+            tooltip: "Purchase Microstrawman.",
+            image() {
+                if (hasAchievement("Miniprestige", 34)) return "js/images/Miniprestige/mini34.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         41: {
             name: "Prefacing conclusions",
             done() {return player.Miniprestige.points.gte(3)},
-            tooltip: "Get 3 Miniprestiges. You now keep Micro upgrades on Miniprestige."
+            tooltip: "Get 3 Miniprestiges. You now keep Micro upgrades on Miniprestige.",
+            image() {
+                if (hasAchievement("Miniprestige", 41)) return "js/images/Miniprestige/mini41.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         42: {
             name: "Stacked II",
             done() {return challengeCompletions("Nanoprestige", 12) >= 3},
-            tooltip: "Complete Muckraking 3 times."
+            tooltip: "Complete Muckraking 3 times.",
+            image() {
+                if (hasAchievement("Miniprestige", 42)) return "js/images/Miniprestige/mini42.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
 
         },
         43: {
             name: "Leg Day",
             done() {return player.Nanoprestige.buyables[11].gte(125)},
-            tooltip: "Buy Nanobuff 125 times."
+            tooltip: "Buy Nanobuff 125 times.",
+            image() {
+                if (hasAchievement("Miniprestige", 43)) return "js/images/Miniprestige/mini43.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
         44: {
             name: "Triple Threat",
             done() {return hasChallenge("Nanoprestige", 22)},
-            tooltip: "Complete Nanofuse."
+            tooltip: "Complete Nanofuse.",
+            image() {
+                if (hasAchievement("Miniprestige", 44)) return "js/images/Miniprestige/mini44.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         }
         
     },
     canBuyMax() {
-        return hasAchievement("Smallprestige", 41)
+        return hasAchievement("Smallprestige", 21)
     },
     tabFormat: {
         "Upgrades": {
             content: ["main-display", "resource-display", "prestige-button", "upgrades"],
-            unlocked() {return player.Miniprestige.points.gte(1)}
+            unlocked() {return hasAchievement("Unlockers", 11)}
         },
         "Buyables": {
             content: ["main-display", "resource-display", "prestige-button", "buyables"],
@@ -173,7 +278,7 @@ addLayer("Miniprestige", {
         },
         "Achievements": {
             content: ["main-display", "resource-display", "achievements"],
-            unlocked() {return player.Miniprestige.points.gte(1)}
+            unlocked() {return hasAchievement("Unlockers", 11)}
 
         }
     },
