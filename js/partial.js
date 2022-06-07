@@ -6,8 +6,8 @@ addLayer("Partialprestige", {
         unlocked: false,
 		points: new Decimal(0),
     }},
-    color: "#5BCEFA",
-    requires: new Decimal(Decimal.dInf), // Can be a function that takes requirement increases into account
+    color: "#FE5E41",
+    requires: new Decimal(5), // Can be a function that takes requirement increases into account
     resource: "Partial prestiges", // Name of prestige currency
     baseResource: "Small prestiges", // Name of resource prestige is based on
     baseAmount() {return player.Smallprestige.points}, // Get the current amount of baseResource
@@ -15,6 +15,16 @@ addLayer("Partialprestige", {
     exponent: 1, // Prestige currency exponent
     base: 5,
     branches: ["Smallprestige"],
+    effect() {
+        var eff = player.Partialprestige.points.plus(1)
+        return eff
+    },
+    effectDescription() {
+        var desc;
+        desc = "which are multiplying Point gain by "
+        desc += format(tmp.Partialprestige.effect) + "x"
+        return desc
+    },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         
@@ -35,7 +45,28 @@ addLayer("Partialprestige", {
         11: {
             name: "Partially responsible",
             done() {return player.Partialprestige.points.gte(1)},
-            tooltip: "Partial Prestige for the first time. In the next update, this unlocks Tokens."
+            tooltip: "Partial Prestige for the first time.",
+            image() {
+                if (hasAchievement("Partialprestige", 11)) return "js/images/Partialprestige/partial11.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
+        },
+        12: {
+            name: "[S] Cascade.",
+            done() {return player.BrokenMicro.unlocked},
+            tooltip: "Unlock Cascaded Micro. Buying Broken Nano buyables sets their amount to their maximum.",
+            image() {
+                if (hasAchievement("Partialprestige", 11)) return "js/images/Partialprestige/partial12.png"
+                else return "js/images/unearn.png"
+            },
+            style: {
+                width:"128px",
+                height:"128px"
+            }
         },
     },
     tabFormat: {

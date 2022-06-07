@@ -372,7 +372,18 @@ addLayer("Unlockers", {
                 height:"64px"
             }
         },
-        
+        45: {
+            done() {return player.Partialprestige.points.gte(1)},
+            tooltip: "1 Partialprestige. Unlocks a buyable for Miniprestige, and a few upgrades.",
+            image() {
+                if (hasAchievement("Unlockers", 45)) return "js/images/Unlockers/unl45.png"
+                else return "js/images/noUnlock.png"
+            },
+            style: {
+                width:"64px",
+                height:"64px"
+            }
+        },
     },
     tabFormat: {
         "Unlockers": {content: ["resource-display",  "clickables", "achievements",],}

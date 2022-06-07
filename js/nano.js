@@ -68,6 +68,7 @@ addLayer("Nanoprestige", {
         if (hasChallenge("Microprestige", 11)) mult = mult.pow(1.2)
         if (hasUpgrade("Miniprestige", 22)) mult = mult.pow(upgradeEffect("Miniprestige", 22))
         if (hasUpgrade("Nanoprestige", 84)) mult = mult.pow(upgradeEffect("Nanoprestige", 84))
+        mult = mult.pow(buyableEffect("BrokenMicro", 21))
         return mult
 
     },
@@ -680,7 +681,7 @@ addLayer("Nanoprestige", {
         82: {
             name:"NanoXII",
             title: "NanoXII",
-            description: "Boost Constant divides Capital price.",
+            description: "Break Constant divides Capital price.",
             effect() {
                 return tmp.BrokenNano.effect.plus(10).log10().plus(1)
             },
@@ -1020,7 +1021,7 @@ addLayer("Nanoprestige", {
     },
     doReset(layer) {
         let keep = [];
-        
+        keep.push("milestones")
         if (layer.row == this.row) return
         else if (layer == "Microprestige" || layer == "BrokenNano" || layer == "BNCapital" || layer == "BNCommunal") {
             if (hasAchievement("Miniprestige", 12)) keep.push("upgrades")
@@ -1107,7 +1108,7 @@ addLayer("BrokenNano", {
     startData() { return {
         points: new Decimal(0),
     }},
-    color: "#D62900",
+    color: "#4D489C",
     requires: new Decimal(700000), // Can be a function that takes requirement increases into account
     resource: "Nanoprestige Fragments", // Name of prestige currency
     baseResource: "Nanoprestiges", // Name of resource prestige is based on
@@ -1127,11 +1128,12 @@ addLayer("BrokenNano", {
         if (hasUpgrade("Microprestige", 45)) pow = pow.times(1.25)
         var constant = new Decimal(1).plus(Decimal.mul(0.02, player.BrokenNano.points.plus(1).ln().pow(pow)))
         if (hasUpgrade("Miniprestige", 23)) constant = constant.times(upgradeEffect("Miniprestige", 23))
+        if (hasUpgrade("Miniprestige", 24)) constant = constant.pow(upgradeEffect("Miniprestige", 24))
         return constant
     },
     effectDescription() {
         var desc;
-        desc = "which is giving a Boost Constant of "
+        desc = "which is giving a Break Constant of "
         desc += format(tmp.BrokenNano.effect)
         desc += ". <br>This serves as the basis for all of this layer's buyables.<br>"
         desc += "You generate Fragments when you have over 700,000 Nanoprestiges."
@@ -1160,7 +1162,7 @@ addLayer("BrokenNano", {
 
     buyables: {
         11: {
-            title() {return "Boost I"},
+            title() {return "BREAK I"},
             cost(x) {
                 var cost;
                 cost = new Decimal("1e10").pow(x.pow(new Decimal(2).pow(1/2)))
@@ -1183,6 +1185,7 @@ addLayer("BrokenNano", {
             canAfford() {return (player[this.layer].points.gte(this.cost()) && player.BrokenNano.buyables[11].lt(tmp.BrokenNano.buyables[11].cap))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (hasAchievement("Partialprestige", 12)) player[this.layer].buyables[this.id] = tmp[this.layer].buyables[this.id].cap
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -1209,7 +1212,7 @@ addLayer("BrokenNano", {
 
         },
         12: {
-            title() {return "Boost II"},
+            title() {return "BREAK II"},
             cost(x) {
                 var cost;
                 cost = Decimal.max(new Decimal("2500"), new Decimal("1e20").pow(x.pow(2)))
@@ -1233,6 +1236,7 @@ addLayer("BrokenNano", {
             canAfford() {return (player[this.layer].points.gte(this.cost()) && player.BrokenNano.buyables[12].lt(tmp.BrokenNano.buyables[12].cap))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (hasAchievement("Partialprestige", 12)) player[this.layer].buyables[this.id] = tmp[this.layer].buyables[this.id].cap
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -1256,7 +1260,7 @@ addLayer("BrokenNano", {
 
         },
         13: {
-            title() {return "Boost III"},
+            title() {return "BREAK III"},
             cost(x) {
                 var cost;
                 cost = Decimal.max(new Decimal("1e6"), new Decimal("1e30").pow(x.pow(new Decimal(2).pow(1/2))))
@@ -1279,6 +1283,7 @@ addLayer("BrokenNano", {
             canAfford() {return (player[this.layer].points.gte(this.cost()) && player.BrokenNano.buyables[13].lt(tmp.BrokenNano.buyables[13].cap))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (hasAchievement("Partialprestige", 12)) player[this.layer].buyables[this.id] = tmp[this.layer].buyables[this.id].cap
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -1302,7 +1307,7 @@ addLayer("BrokenNano", {
         },
 
         21: {
-            title() {return "Boost IV"},
+            title() {return "BREAK IV"},
             cost(x) {
                 var cost;
                 cost = new Decimal("1e14500").times(new Decimal("1e50").pow(x.pow(new Decimal(2).pow(1/2))))
@@ -1325,6 +1330,7 @@ addLayer("BrokenNano", {
             canAfford() {return (player[this.layer].points.gte(this.cost()) && player.BrokenNano.buyables[21].lt(tmp.BrokenNano.buyables[21].cap))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (hasAchievement("Partialprestige", 12)) player[this.layer].buyables[this.id] = tmp[this.layer].buyables[this.id].cap
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -1349,7 +1355,7 @@ addLayer("BrokenNano", {
 
         },
         22: {
-            title() {return "Boost V"},
+            title() {return "BREAK V"},
             cost(x) {
                 var cost;
                 cost = new Decimal("1e16000").times(new Decimal("1e50").pow(x.pow(new Decimal(2).pow(1/2))))
@@ -1372,6 +1378,7 @@ addLayer("BrokenNano", {
             canAfford() {return (player[this.layer].points.gte(this.cost()) && player.BrokenNano.buyables[22].lt(tmp.BrokenNano.buyables[22].cap))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (hasAchievement("Partialprestige", 12)) player[this.layer].buyables[this.id] = tmp[this.layer].buyables[this.id].cap
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -1394,7 +1401,7 @@ addLayer("BrokenNano", {
 
         },
         23: {
-            title() {return "Boost VI"},
+            title() {return "BREAK VI"},
             cost(x) {
                 var cost;
                 cost = new Decimal("1e20000").times(new Decimal("1e50").pow(x.pow(new Decimal(2).pow(1/2))))
@@ -1417,6 +1424,7 @@ addLayer("BrokenNano", {
             canAfford() {return (player[this.layer].points.gte(this.cost()) && player.BrokenNano.buyables[23].lt(tmp.BrokenNano.buyables[23].cap))},
             buy() {
                 if (!hasUpgrade("Nanoprestige", 34)) player[this.layer].points = player[this.layer].points.sub(this.cost())
+                if (hasAchievement("Partialprestige", 12)) player[this.layer].buyables[this.id] = tmp[this.layer].buyables[this.id].cap
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
             },
             unlocked() {
@@ -1533,7 +1541,7 @@ addLayer("BrokenNano", {
             name: "broken9",
             title: "Layer II",
             cost: new Decimal("1e9.673e6"),
-            description: "Unlock Nano Communals, and increase Boost Constant exponent by 0.3",
+            description: "Unlock Nano Communals, and increase Break Constant exponent by 0.3",
             unlocked() {return hasAchievement("Unlockers", 36)}
         },
     },
@@ -1566,7 +1574,7 @@ addLayer("BrokenNano", {
         5: {
             requirementDescription: "1e100,000 Nanoprestige Fragments",
             done() {return player.BrokenNano.points.gte("1e100000")},
-            effectDescription: "Automate buying the second row of buyables; increase Boost Constant power by 0.02"
+            effectDescription: "Automate buying the second row of buyables; increase Break Constant power by 0.02"
         },
         6: {
             requirementDescription: "1e1,000,000 Nanoprestige Fragments",
@@ -1627,7 +1635,7 @@ addLayer("BNCapital", {
     startData() { return {
         points: new Decimal(0),
     }},
-    color: "#b52100",
+    color: "#2372A1",
     requires: new Decimal("32"), // Can be a function that takes requirement increases into account
     resource: "Capital", // Name of prestige currency
     baseResource: "Broken Nano Buyables", // Name of resource prestige is based on
@@ -1651,7 +1659,7 @@ addLayer("BNCapital", {
     },
     effectDescription() {
         var desc;
-        desc = "which is increasing Boost Constant exponent by " + format(tmp.BNCapital.effect)
+        desc = "which is increasing Break Constant exponent by " + format(tmp.BNCapital.effect)
         return desc
     },
     branches: ["BrokenNano"],
@@ -1740,7 +1748,7 @@ addLayer("BNCommunal", {
     startData() { return {
         points: new Decimal(0),
     }},
-    color: "#ea4b27",
+    color: "#A9D2D5",
     requires: new Decimal("1e10000000"), // Can be a function that takes requirement increases into account
     resource: "Communal", // Name of prestige currency
     baseResource: "Nanoprestige Fragments", // Name of resource prestige is based on
@@ -1762,6 +1770,7 @@ addLayer("BNCommunal", {
     branches: ["BrokenNano"],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (player.BNCommunal.points.gte(270)) mult = mult.times(Decimal.dInf)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -1785,7 +1794,10 @@ addLayer("BNCommunal", {
         if (player.BNCommunal.points.gte(200)) mult = mult.times(0.15)
         if (player.BNCommunal.points.gte(210)) mult = mult.times(0.10)
         if (player.BNCommunal.points.gte(220)) mult = mult.times(0.05)
-        if (player.BNCommunal.points.gte(230)) mult = mult.times(0)
+        if (player.BNCommunal.points.gte(230)) mult = mult.times(0.00000001)
+        if (player.BNCommunal.points.gte(250)) mult = mult.times(1e-10)
+        if (player.BNCommunal.points.gte(260)) mult = mult.times("1e-20")
+        
         return new Decimal(mult)
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)

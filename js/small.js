@@ -6,7 +6,7 @@ addLayer("Smallprestige", {
         unlocked: false,
 		points: new Decimal(0),
     }},
-    color: "#1C4482",
+    color: "#1c4582",
     requires: new Decimal(4), // Can be a function that takes requirement increases into account
     resource: "Small prestiges", // Name of prestige currency
     baseResource: "Miniprestiges", // Name of resource prestige is based on
@@ -17,6 +17,7 @@ addLayer("Smallprestige", {
     branches: ["Miniprestige"],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasMilestone("CMEnlarge", 3)) mult = mult.div(1.3).pow(player.CMEnlarge.points)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -281,5 +282,5 @@ addLayer("Smallprestige", {
 
     },
     layerShown(){
-        return player.Miniprestige.best.gte(3) || player.Smallprestige.best.gte(1)}
+        return player.Miniprestige.best.gte(3) || player.Smallprestige.best.gte(1) || hasAchievement("Unlockers", 24)}
 })

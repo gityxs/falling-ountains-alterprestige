@@ -27,26 +27,60 @@ addLayer("Miniprestige", {
     branches: ["Microprestige"],
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-        if (hasUpgrade("Microprestige", 51)) mult = mult.div(upgradeEffect("Microprestige", 51))
-        if (hasUpgrade("Microprestige", 52)) mult = mult.div(upgradeEffect("Nanoprestige", 91))
         if (hasUpgrade("Miniprestige", 21)) mult = mult.div(buyableEffect("Microprestige", 13))
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         mult = new Decimal(1)
-        if (hasUpgrade("Nanoprestige", 56)) mult = mult.times(1.47189)
         return new Decimal(mult)
     },
     directMult() {
         mult = new Decimal(1)
         if (hasMilestone("BNCapital", 0)) mult = mult.times(Decimal.min(2, new Decimal(1.22).pow(player.BNCapital.points)))
+        if (hasUpgrade("Microprestige", 54)) mult = mult.times(upgradeEffect("Microprestige", 54))
         return mult
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "m", description: "m: Reset for Miniprestiges", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    
+    buyables: {
+        11: {
+            cost(x) {
+                var cost = new Decimal("1000").plus(Decimal.pow("1.5", Decimal.pow(x, 1.3)))
+                if (hasUpgrade("Microprestige", 55)) cost = new Decimal("1000").plus(Decimal.pow("1.43", Decimal.pow(x, 1.28)))
+                return Decimal.floor(cost);
+            },
+            title() { return "Minibuff"},
+            display() {
+                var display;
+                display = "Multiply Microprestige gain by " + format(this.effect())+"<br><br>"
+                display += "Cost: "+format(this.cost()) + " Miniprestiges."
+                return display;
+            },
+            canAfford() { return player[this.layer].points.gte(this.cost()) },
+            buy() {
+                player[this.layer].points = player[this.layer].points.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            unlocked() {
+                if (hasAchievement("Unlockers",45)) {
+                    return true
+                } else return false
+
+            },
+            effect() {
+                var base = new Decimal(player.Miniprestige.resetTime).pow(1.2).plus(1)
+                let eff = new Decimal(base).pow(player[this.layer].buyables[this.id])
+                if (hasUpgrade("Miniprestige", 14)) eff = new Decimal(base).pow(new Decimal(1.3).pow(player[this.layer].buyables[this.id]))
+                return eff
+            },
+            
+        },
+
+
+
+    },
     upgrades: {
         11: {
             name: "Minirelax",
@@ -90,14 +124,36 @@ addLayer("Miniprestige", {
         23: {
             name: "Miniexplode",
             title: "Miniexplode",
-            description: "Boost Constant is multiplied based on communals & time since last Communal.",
+            description: "Break Constant is multiplied based on communals & time since last Communal.",
             effect() {
-                return new Decimal(player.BNCommunal.resetTime).plus(1).pow(new Decimal(1).plus(player.BNCommunal.points))
+                var addOns = player.BNCommunal.points
+                if (hasUpgrade("Microprestige", 53)) addOns = addOns.plus(player.BNCapital.points)
+                var effect = new Decimal(player.BNCommunal.resetTime).plus(1).pow(new Decimal(1).plus(addOns))
+                if (hasUpgrade("Microprestige", 51)) effect = effect.pow(2401)
+                return effect
             },
             effectDisplay() {return format(upgradeEffect("Miniprestige", 23))+"x"},
             cost: new Decimal(418),
             unlocked() {return hasAchievement("Unlockers", 35)}
-        }
+        },
+        14:{
+            name: "Minifigure",
+            title: "Minifigure",
+            description: "Each level of Minibuff increases the effect more exponentially.",
+            cost: new Decimal(20000),
+            unlocked() {return hasAchievement("Unlockers", 45)}
+        },
+        24:{
+            name: "Miniscule",
+            title: "Miniscule",
+            description: "Microprestige Fragments boost Break Constant and vice versa",
+            effect() {
+                return Decimal.log10(player.BrokenMicro.points.plus(10)).plus(1)
+            },
+            effectDisplay() {return "^"+format(upgradeEffect("Miniprestige", 24))+" & x"+ format(player.BrokenNano.points.plus(2).log2().plus(2).log2().plus(1))},
+            cost: new Decimal(200000),
+            unlocked() {return hasAchievement("Unlockers", 45)}
+        },
     },
     achievements:{
         11: {
@@ -269,7 +325,7 @@ addLayer("Miniprestige", {
         },
         "Buyables": {
             content: ["main-display", "resource-display", "prestige-button", "buyables"],
-            unlocked() {return false}          
+            unlocked() {return hasAchievement("Unlockers", 45)}          
         },
         "Challenges": {
             content: ["main-display", "resource-display", "prestige-button", "challenges"],

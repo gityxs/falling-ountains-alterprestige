@@ -13,13 +13,25 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3.3 Beta",
-	name: "The Great Rebalance, phase 3",
+	num: "0.3.4 Beta",
+	name: "Introduction to the Cascade",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
-
+	<h3>v0.3.4</h3><br>
+		Introduction to the Cascade<br>
+		- Added 2 new layers, Cascade & Enlargement <br>
+		- Inspired by merging things <br>
+		- Warning: more idle than normal! <br>
+		- Added 5 more Microprestige upgrades <br>
+		- Added 2 more Miniprestige upgrade and 1 Miniprestige buyable <br>
+		- Oh yeah you can also Partialprestige now <br>
+		- 2 new achievements on the Partialprestige layer <br>
+		- Endgame moved to 10 Smallprestiges <br>
+		- Boost Constant changed to Break Constant<br>
+		- Broken Nano and its sublayers are now colored differently. <br>
+		- The tree is now mostly blue. Have fun! <br><br>
 	<h3>v0.3.3</h3><br>
 		Great Rebalance, part 3<br>
 		- Added a new layer, Communals<br>
@@ -130,6 +142,7 @@ function getPointGen() {
 	gain = gain.times(tmp.Miniprestige.effect)
 	if (hasAchievement("Miniprestige", 31)) gain = gain.times(49)
 	if (hasAchievement("Smallprestige", 11)) gain = gain.times(Decimal.pow("1e25", player.Smallprestige.points.plus(1)))
+	gain = gain.times(tmp.Partialprestige.effect)
 	if (hasChallenge("Nanoprestige", 11)) gain = gain.pow(1.1)
 	if (hasUpgrade("Nanoprestige", 75)) gain = gain.pow(1.15)
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
@@ -149,7 +162,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.Smallprestige.points.gte(new Decimal(5))
+	return player.Smallprestige.points.gte(new Decimal(10))
 }
 
 
