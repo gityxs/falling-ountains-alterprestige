@@ -52,7 +52,9 @@ addLayer("Smallprestige", {
             if (hasUpgrade("Smallprestige", 13)) genAmount = genAmount.times(Decimal.pow(3, player.Smallprestige.milestones.length))
             if (hasMilestone("Smallprestige", 2)) genAmount = genAmount.times(Decimal.pow(3, player.Smallprestige.milestones.length))
             if (hasUpgrade("Smallprestige", 14)) genAmount = genAmount.times(Decimal.pow(2, player.Smallprestige.upgrades.length))
+            if (hasUpgrade("CMEnlarge", 51)) genAmount = genAmount.times(buyableEffect("Smallprestige", 13))
             player.Smallprestige.smallForce = player.Smallprestige.smallForce.plus(genAmount.div(20))
+            if (player.Smallprestige.smallForce.lt(0)) player.Smallprestige.smallForce = new Decimal(0)
         }
     },
     smallForcePow() {
@@ -81,7 +83,12 @@ addLayer("Smallprestige", {
             title: "Small I",
             description: "Unlock the Small Force minigame, generating boosts based on Small Prestiges.",
             unlocked() {return hasAchievement("Unlockers", 53)},
-            cost: new Decimal("9")
+            cost() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return new Decimal("9")
+                if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") return new Decimal("12")
+                if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33") return new Decimal("11")
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return new Decimal("17")
+            }
         },
         12: {
             name:"Small II",
@@ -90,14 +97,20 @@ addLayer("Smallprestige", {
             fullDisplay() {
                 var display = "<h3> Small II </h3> <br>"
                 display += "Multiply Small Force gain by 7.<br><br>"
-                display += "Cost: 7,500 Small Force"
+                if (player.CMEnlarge.upgradeOrder[1] == "33") display += "Cost: 7,500 Small Force"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) display += "Cost: 75,000 Small Force"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") display += "Cost: 1,000,000 Small Force"
                 return display
             },
             canAfford() {
-                return player.Smallprestige.smallForce.gte(7500)
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(7500)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(75000)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(1000000)
             },
             pay() {
-                player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus(7500)
+                if (player.CMEnlarge.upgradeOrder[1] == "33") player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus(7500)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus(75000)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") player.Smallprestige.smallAutobuyer = player.Smallprestige.smallForce.minus("1e6")
             },
             unlocked() {return hasAchievement("Unlockers", 53)},
         },
@@ -105,14 +118,20 @@ addLayer("Smallprestige", {
             fullDisplay() {
                 var display = "<h3> Small III </h3> <br>"
                 display += "Unlock Smallprestige milestones, and per milestone multiply Small Force gain by 3.<br><br>"
-                display += "Cost: 5.00e6 Small Force"
+                if (player.CMEnlarge.upgradeOrder[1] == "33") display += "Cost: 5.00e6 Small Force"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) display +="Cost: 2.5e7 Small Force"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") display += "Cost: 1e8 Small Force"
                 return display
             },
             canAfford() {
-                return player.Smallprestige.smallForce.gte(5e6)
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(5e6)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(2.5e7)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(1e8)
             },
             pay() {
-                player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus(5e6)
+                if (player.CMEnlarge.upgradeOrder[1] == "33") player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus(5e6)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus(2.5e7)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") player.Smallprestige.smallAutobuyer = player.Smallprestige.smallForce.minus("1e8")
             },
             unlocked() {return hasAchievement("Unlockers", 53)},
         },
@@ -121,20 +140,31 @@ addLayer("Smallprestige", {
             title: "Small IV",
             description: "Multiply Small Force gain by 3x per upgrade.",
             unlocked() {return hasAchievement("Unlockers", 53)},
-            cost: new Decimal("12")
+            cost() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return new Decimal("12")
+                if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") return new Decimal("15")
+                if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33") return new Decimal("14")
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return new Decimal("20")
+            }
         },
         15: {
             fullDisplay() {
                 var display = "<h3> Small V </h3> <br>"
                 display += "Autobuy speed increased 2x, automerge speed decreased -2s, and gain double levels from Milestone 5<br><br>"
-                display += "Cost: 1e60 Small Force"
+                if (player.CMEnlarge.upgradeOrder[1] == "33") display += "Cost: 1e60 Small Force"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) display +="Cost: 1e68 Small Force"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") display += "Cost: 1e76 Small Force"
                 return display
             },
             canAfford() {
-                return player.Smallprestige.smallForce.gte("1e60")
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte("1e60")
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte("1e68")
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte("1e76")
             },
             pay() {
-                player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus("1e60")
+                if (player.CMEnlarge.upgradeOrder[1] == "33") player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus("1e60")
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) player.Smallprestige.smallForce = player.Smallprestige.smallForce.minus("1e68")
+                if (player.CMEnlarge.upgradeOrder[3] == "33") player.Smallprestige.smallAutobuyer = player.Smallprestige.smallForce.minus("1e76")
             },
             unlocked() {return hasAchievement("Unlockers", 53)},
         },
@@ -144,7 +174,7 @@ addLayer("Smallprestige", {
         11: {
             title: "Small Force I",
             cost(x) {
-                if (player.CMEnlarge.upgradeOrder[1] = "33") var cost = new Decimal(10)
+                var cost = new Decimal(10)
                 return cost.times(new Decimal(2).pow(x))
             },
             display() {
@@ -166,6 +196,7 @@ addLayer("Smallprestige", {
             buy() {
                 player[this.layer].smallForce = player[this.layer].smallForce.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (hasMilestone("Smallprestige", 5))setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(4))
             },
             effect() {
                 return new Decimal(1.5).pow(player[this.layer].buyables[this.id])
@@ -174,7 +205,7 @@ addLayer("Smallprestige", {
         12: {
             title: "Small Force II",
             cost(x) {
-                if (player.CMEnlarge.upgradeOrder[1] = "33") var cost = new Decimal(1e14)
+                var cost = new Decimal(1e14)
                 return cost.times(new Decimal(12).pow(x))
             },
             display() {
@@ -199,44 +230,129 @@ addLayer("Smallprestige", {
             buy() {
                 player[this.layer].smallForce = player[this.layer].smallForce.sub(this.cost())
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+                if (hasMilestone("Smallprestige", 5))setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(4))
             },
             effect() {
                 return new Decimal(2.5).pow(player[this.layer].buyables[this.id])
             }
         },
+        13: {
+            title: "Small Force III",
+            cost(x) {
+                var cost = new Decimal("1e100")
+                return cost.times(new Decimal(100).pow(x.pow(2)))
+            },
+            display() {
+                var display;
+                display = "Increase Small Force gain by " + format(this.effect()) +"<br>"
+                display += "Effect: Smallprestiges^x<br><br>"
+                display += "Cost: "+format(this.cost()) + " Small Force.<br>"
+                display += "Cost formula: 100^x^2"
+                display += "<br>Levels: " + format(player[this.layer].buyables[this.id]) + "+" + format(tmp[this.layer].buyables[this.id].totalAmount.minus(player[this.layer].buyables[this.id]))
+                return display;
+            },
+            totalAmount() {
+                return player[this.layer].buyables[this.id]
 
+            },
+            unlocked() {
+                return hasUpgrade("CMEnlarge", 51)
+            },
+            canAfford() {
+                return player[this.layer].smallForce.gte(this.cost())
+            },
+            buy() {
+                player[this.layer].smallForce = player[this.layer].smallForce.sub(this.cost())
+                setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(1))
+            },
+            effect() {
+                return new Decimal(player.Smallprestige.points).pow(player[this.layer].buyables[this.id]).plus(1)
+            }
+        },
 
     },
     milestones: {
         0: {
-            requirementDescription: "5e6 Small Force (1)",
-            done() {return player.Smallprestige.smallForce.gte(5e6) && hasUpgrade("Smallprestige", 13)},
-            effectDescription: "Add 5 to CASCADE 11 cap, and subtract 5s from its cost.",
+            requirementDescription() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return "5e6 Small Force (1)"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return "2.5e7 Small Force (1)"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return "1e8 Small Force (1)"
+            }, 
+            done() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(5e6) && hasUpgrade("Smallprestige", 13)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(2.5e7) && hasUpgrade("Smallprestige", 13)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(1e8) && hasUpgrade("Smallprestige", 13)
+            },
+            effectDescription: "Add 5 to CASCADE 11 cap, and subtract 10s from its cost.",
             unlocked() {return hasUpgrade("Smallprestige", 13)},
         },
         1: {
-            requirementDescription: "5e7 Small Force (2)",
-            done() {return player.Smallprestige.smallForce.gte(5e7)},
+            requirementDescription() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return "5e7 Small Force (2)"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return "2e8 Small Force (2)"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return "1e9 Small Force (2)"
+            }, 
+            done() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(5e7)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(2e8)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(1e9)
+            },
             effectDescription: "Keep one Broken Nano upgrade on Smallprestige per milestone.",
-            unlocked() {return hasUpgrade("Smallprestige", 13)},
+            unlocked() {
+                return hasUpgrade("Smallprestige", 13)
+        },
         },
         2: {
-            requirementDescription: "1e9 Small Force (3)",
-            done() {return player.Smallprestige.smallForce.gte(1e9)},
+            requirementDescription() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return "1e9 Small Force (3)"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return "5e9 Small Force (3)"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return "2e10 Small Force (3)"
+            }, 
+            done() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(1e9)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(5e9)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(2e10)
+            },
             effectDescription: "Per milestone multiply Small Force gain by 2, and add 2 to CASCADE 22 cap.",
             unlocked() {return hasUpgrade("Smallprestige", 13)},
         },
         3: {
-            requirementDescription: "2.5e13 Small Force (4)",
-            done() {return player.Smallprestige.smallForce.gte(2.5e13)},
+            requirementDescription() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return "2.5e13 Small Force (4)"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return "1e17 Small Force (4)"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return "1e18 Small Force (4)"
+            
+            }, 
+            done() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(2.5e13)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(1e17)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(1e18)
+            },
             effectDescription: "Keep Micro buyables on Small resets, unlock Small Force II, and autobuy Small Force I once per second.",
             unlocked() {return hasUpgrade("Smallprestige", 13)},
         },
         4: {
-            requirementDescription: "1e40 Small Force (5)",
-            done() {return player.Smallprestige.smallForce.gte(1e40)},
+            requirementDescription() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return "1e40 Small Force (5)"
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return "1e45 Small Force (5)"
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return "1e50 Small Force (5)"
+            }, 
+            done() {
+                if (player.CMEnlarge.upgradeOrder[1] == "33") return player.Smallprestige.smallForce.gte(1e40)
+                if ((player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "33") ||(player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "33")) return player.Smallprestige.smallForce.gte(1e45)
+                if (player.CMEnlarge.upgradeOrder[3] == "33") return player.Smallprestige.smallForce.gte(1e50)
+            },
             effectDescription: "Autobuy Small Force II once per second, reduce CASCADE 11 cost scaling by 0.05s, and the square root of Small Force's effect adds to all CASCADE caps.",
             unlocked() {return hasUpgrade("Smallprestige", 13)},
+        },
+        5: {
+            requirementDescription() {
+                return "1e200 Small Force (5)"
+            },
+            done() {
+                return player.Smallprestige.smallForce.gte(1e200)
+            },
+            effectDescription: "Small Force autobuyers bulk x5.",
         },
 
 
@@ -473,7 +589,7 @@ addLayer("Smallprestige", {
         },
         "Small Force": {
             unlocked () {return hasUpgrade("Smallprestige", 11)},
-            content: ["main-display", "resource-display", ["buyable", ["11"]], ["buyable", ["12"]]]
+            content: ["main-display", "resource-display", "buyables"]
         },
         "Milestones": {
             unlocked () {return hasUpgrade("Smallprestige", 13)},

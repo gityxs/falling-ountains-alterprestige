@@ -480,7 +480,7 @@ addLayer("Unlockers", {
         },
         52: {
             done() {return hasUpgrade("CMEnlarge", 32)},
-            tooltip: "Purchase MINI ENLARGEMENT. Unlocks Mini upgrades 31, 32, 33, 34, and 35.",
+            tooltip: "Purchase MINI ENLARGEMENT. Unlocks Mini upgrades 31, 32, 33, and 34.",
             image() {
                 if (hasAchievement("Unlockers", 52)) return "js/images/Unlockers/unl52.png"
                 else return "js/images/noUnlock.png"
@@ -504,7 +504,7 @@ addLayer("Unlockers", {
         },
         54: {
             done() {return hasUpgrade("CMEnlarge", 51)},
-            tooltip: "Purchase BUYABLE ENLARGEMENT. Unlocks 1 buyable in Nano, Micro, and Broken Nano, and 2 in Mini",
+            tooltip: "Purchase BUYABLE ENLARGEMENT. Unlocks 1 buyable in Nano, Micro, and Broken Nano, Mini, and Small. Also unlocks Microfinale.",
             image() {
                 if (hasAchievement("Unlockers", 54)) return "js/images/Unlockers/unl54.png"
                 else return "js/images/noUnlock.png"

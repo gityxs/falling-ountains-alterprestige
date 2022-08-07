@@ -1,7 +1,7 @@
 let modInfo = {
 	name: "Falling Mountain's AlterPrestige",
 	id: "alterPrestige",
-	author: "Falling Mountain, original by Makiki99",
+	author: "Falling Mountain, original Prestige by Makiki99",
 	pointsName: "points",
 	modFiles: ["nano.js", "tree.js", "micro.js", "mini.js", "small.js", "partial.js", "achievements.js"],
 
@@ -18,9 +18,9 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br>
-	<h3>v0.4</h3><br>
-		Fleshed Out<br>
+	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br><br>
+	<h2>v0.4.0</h2><br>
+		<h3>Active Enlargement</h3><br>
 		- 5 new Nanoprestige upgrades<br>
 		- 5 new Microprestige upgrades<br>
 		- 5 new Miniprestige upgrades<br>
@@ -28,10 +28,15 @@ let changelog = `<h1>Changelog:</h1><br>
 		- 5 new Cascading Micro upgrades<br>
 		- Additional buyables and milestones <br>
 		- Enlargement upgrade tree, with more to come! <br>
+		- Added row 2 Cascade autobuyer<br>
+		- Clickable added to give some extra progress for those who want to be more active during parts of CASCADE.<br>
+		- You can now switch between "pages" of 5x5 upgrades. In the next update, this will have more gameplay effects. <br>
+		- New Smallprestige minigame, Small Force!<br>
+		- Player agency! More of that will happen in future updates as well.<br>
 		- Filled out the normal Achievement page <br>
 		- Added two new Partial achievements, for buying Enlargement upgrades <br>
 		- Added a third new Partial achievement for point gain <br>
-		- Added five new Unlockers <br>
+		- Added six new Unlockers <br>
 		- Fixed bug where Nanomuscle would remain active in Nano challenge 12<br>
 		- Fixed bug where [S] Cascade would show as unlocked after Partialprestiging for the first time <br>
 		- The ability to buy max Nanoprestiges has been moved to Nano upgrade 13 rather than 23. <br> <br>
@@ -72,7 +77,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Achievements have changed as well.<br>
 		- Endgame at 16 Miniprestiges<br><br>
 	<h3>v0.3.1</h3><br>
-		Pre-Smallprestige section of the Great Rebalance.<br>
+		Great Rebalance, part 1<br>
 		- Upgrades have changed:<br>
 		- Most have reduced costs, and changed effects.<br>
 		- Buyables now have much different cost scalings.<br>
@@ -87,7 +92,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Colors of Microprestige and Smallprestige changed to remove confusion with unpurchasable things<br>
 		- Broken Microprestige starts with subtab of "preparation" open.<br>
 		- Next update will deal with other complaints<br><br>
-	<h3>v0.3</h3><br>
+	<h2>v0.3</h2><br>
 		- New Partial Prestige and Broken Microprestige layers.<br>
 		- Current endgame at 1 Partial Prestige.<br>
 		- New achievements<br>
@@ -161,9 +166,15 @@ function getPointGen() {
 	gain = gain.times(tmp.Partialprestige.effect)
 	if (hasChallenge("Nanoprestige", 11)) gain = gain.pow(1.1)
 	if (hasUpgrade("Nanoprestige", 75)) gain = gain.pow(1.15)
+	if (hasAchievement("Unlockers", 54)) {
+		gain = gain.log10()
+		gain = gain.pow(buyableEffect("Nanoprestige", 33))
+		gain = Decimal.pow(10, gain)
+	}
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
 if (hasUpgrade("Nanoprestige", 94)) gain = gain.pow(upgradeEffect("Nanoprestige", 94))
 	if (inChallenge("Microprestige", 11)) gain = gain.pow(0.01)
+	if (player.points.log10().gte(gain.log10().pow(1.5)) && player.Partialprestige.points.gte(1)) player.points = gain
 	return gain
 }
 

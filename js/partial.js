@@ -27,7 +27,7 @@ addLayer("Partialprestige", {
     },
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-        
+        if (player.Partialprestige.points.equals(1)) mult = Decimal.dInf
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -73,7 +73,7 @@ addLayer("Partialprestige", {
             done() {return player.points.gte("e1.79e308")},
             tooltip: "Get more than e1.79e308 points. Smallprestige no longer resets Miniprestige upgrades.",
             image() {
-                if (hasAchievement("Partialprestige", 13)) return "js/images/Partialprestige/partial12.png"
+                if (hasAchievement("Partialprestige", 13)) return "js/images/Partialprestige/partial13.png"
                 else return "js/images/unearn.png"
             },
             style: {
@@ -86,7 +86,7 @@ addLayer("Partialprestige", {
             done() {return hasUpgrade("CMEnlarge", 31) || hasUpgrade("CMEnlarge", 32) || hasUpgrade("CMEnlarge", 33)},
             tooltip: "Purchase one of the row 2 Enlargement upgrades. You can bulk buy Smallprestige.",
             image() {
-                if (hasAchievement("Partialprestige", 14)) return "js/images/Partialprestige/partial12.png"
+                if (hasAchievement("Partialprestige", 14)) return "js/images/Partialprestige/partial14.png"
                 else return "js/images/unearn.png"
             },
             style: {
@@ -99,7 +99,7 @@ addLayer("Partialprestige", {
             done() {return hasUpgrade("CMEnlarge", 51)},
             tooltip: "Purchase all five of the normal Enlargement upgrades.",
             image() {
-                if (hasAchievement("Partialprestige", 15)) return "js/images/Partialprestige/partial12.png"
+                if (hasAchievement("Partialprestige", 15)) return "js/images/Partialprestige/partial15.png"
                 else return "js/images/unearn.png"
             },
             style: {
