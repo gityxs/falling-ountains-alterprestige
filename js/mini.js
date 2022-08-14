@@ -28,6 +28,7 @@ addLayer("Miniprestige", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         if (hasUpgrade("Miniprestige", 21)) mult = mult.div(buyableEffect("Microprestige", 13))
+        
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -38,6 +39,8 @@ addLayer("Miniprestige", {
         mult = new Decimal(1)
         if (hasMilestone("BNCapital", 0)) mult = mult.times(Decimal.min(2, new Decimal(1.22).pow(player.BNCapital.points)))
         if (hasUpgrade("Microprestige", 54)) mult = mult.times(upgradeEffect("Microprestige", 54))
+        if (hasUpgrade("Smallprestige", 11)) mult = mult.times(tmp.Smallprestige.smallForcePow)
+        if (hasUpgrade("CMEnlarge", 32)) mult = mult.times(Decimal.pow(2, player.CMEnlarge.upgrades.length))
         return mult
     },
     row: 2, // Row the layer is in on the tree (0 is the first row)
@@ -47,8 +50,14 @@ addLayer("Miniprestige", {
     buyables: {
         11: {
             cost(x) {
-                var cost = new Decimal("1000").plus(Decimal.pow("1.5", Decimal.pow(x, 1.3)))
-                if (hasUpgrade("Microprestige", 55)) cost = new Decimal("1000").plus(Decimal.pow("1.43", Decimal.pow(x, 1.28)))
+                var costBase = new Decimal("1.5")
+                var costExp = new Decimal("1.3")
+                if (hasUpgrade("Microprestige", 55)) costBase = costBase.minus(0.07)
+                if (hasUpgrade("Miniprestige", 31)) costBase = costBase.minus(0.03)
+                if (hasUpgrade("Microprestige", 55)) costExp = costExp.minus(0.02)
+                if (hasUpgrade("Miniprestige", 31)) costExp = costExp.minus(0.08)
+                var cost = new Decimal("1000").plus(Decimal.pow(costBase, Decimal.pow(x, costExp)))
+                if (hasUpgrade("Miniprestige", 31)) cost = cost.pow(0.98)
                 return Decimal.floor(cost);
             },
             title() { return "Minibuff"},
@@ -70,9 +79,15 @@ addLayer("Miniprestige", {
 
             },
             effect() {
-                var base = new Decimal(player.Miniprestige.resetTime).pow(1.2).plus(1)
+                var timeBase = new Decimal(player.Miniprestige.resetTime)
+                if (hasUpgrade("Miniprestige", 32)) timeBase = timeBase.times(Decimal.pow(2, player.Miniprestige.upgrades.length - 7))
+                var base = new Decimal(timeBase).pow(1.2).plus(1)
+                var timeCap = new Decimal(60)
+                if (hasUpgrade("Miniprestige", 32)) timeCap = timeCap.times(Decimal.pow(1.1, player.Miniprestige.upgrades.length - 7))
+                if (hasUpgrade("Miniprestige", 31)) base = new Decimal(Decimal.min(player.Miniprestige.resetTime, 60)).pow(1.2).plus(1)
                 let eff = new Decimal(base).pow(player[this.layer].buyables[this.id])
                 if (hasUpgrade("Miniprestige", 14)) eff = new Decimal(base).pow(new Decimal(1.3).pow(player[this.layer].buyables[this.id]))
+                if (hasUpgrade("Miniprestige", 31)) eff = new Decimal(1.2).pow(base.times(new Decimal(1.3).pow(player[this.layer].buyables[this.id])))
                 return eff
             },
             
@@ -127,8 +142,9 @@ addLayer("Miniprestige", {
             description: "Break Constant is multiplied based on communals & time since last Communal.",
             effect() {
                 var addOns = player.BNCommunal.points
-                if (hasUpgrade("Microprestige", 53)) addOns = addOns.plus(player.BNCapital.points)
-                var effect = new Decimal(player.BNCommunal.resetTime).plus(1).pow(new Decimal(1).plus(addOns))
+                if (hasUpgrade("Microprestige", 53)) addOns = addOns.plus(player.BNCapital.points.plus(1))
+                if (hasUpgrade("Miniprestige", 32)) effect = new Decimal(Decimal.mul(player.BNCommunal.resetTime, Decimal.pow(2, player.Miniprestige.upgrades.length - 7))).plus(1).pow(new Decimal(1).plus(addOns))
+                else effect = new Decimal(player.BNCommunal.resetTime).plus(1).pow(new Decimal(1).plus(addOns))
                 if (hasUpgrade("Microprestige", 51)) effect = effect.pow(2401)
                 return effect
             },
@@ -143,6 +159,7 @@ addLayer("Miniprestige", {
             cost: new Decimal(20000),
             unlocked() {return hasAchievement("Unlockers", 45)}
         },
+        /*
         24:{
             name: "Miniscule",
             title: "Miniscule",
@@ -153,6 +170,62 @@ addLayer("Miniprestige", {
             effectDisplay() {return "^"+format(upgradeEffect("Miniprestige", 24))+" & x"+ format(player.BrokenNano.points.plus(2).log2().plus(2).log2().plus(1))},
             cost: new Decimal(200000),
             unlocked() {return hasAchievement("Unlockers", 45)}
+        },
+        */
+       31: {
+            name: "Mini I",
+            title: "Mini I",
+            description: "Minibuff now grows exponentially over time, but caps out at 60 seconds.",
+            unlocked() {return hasAchievement("Unlockers", 52)},
+            cost() {
+                if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(1e6)
+                if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(1.25e8)
+                if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(5e7)
+                if (player.CMEnlarge.upgradeOrder[3] == "32") return new Decimal(1e10)
+            }
+
+       },
+       32: {
+            name: "Mini II",
+            title: "Mini II",
+            description: "Per upgrade over 7, increase the effect of time by 2x, the cap of time by 1.25x, and keep one Broken Nano upgrade.",
+            unlocked() {return hasAchievement("Unlockers", 52)},
+            cost() {
+                if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(3e6)
+            if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(2.5e8)
+            if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(1.75e8)
+            if (player.CMEnlarge.upgradeOrder[3] == "32") return new Decimal("7.5e10")
+        }
+        },
+        33: {
+            name: "Mini III",
+            title: "Mini III",
+            description: "Minibuff levels^0.75 adds to CASCADE 22 cap, and the log2 of Minibuff levels adds to its exponent.",
+            unlocked() {return hasAchievement("Unlockers", 52)},
+            cost() {
+                if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(4e6)
+            if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(6e8)
+            if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(2.5e8)
+            if (player.CMEnlarge.upgradeOrder[3] == "32") return new Decimal("1e11")
+            },
+            effect() {return Decimal.pow(player.Miniprestige.buyables[11], 0.75)},
+            effectDisplay() {return "+"+format(upgradeEffect("Miniprestige", 33))+", ^"+format(Decimal.log2(player.Miniprestige.buyables[11].plus(3)))}
+        },
+        34: {
+            name: "Mini IV",
+            title: "Mini IV",
+            description: "Reduce CASCADE 11 cost && increase its cap based on time this Miniprestige, up to the cap.",
+            unlocked() {return hasAchievement("Unlockers", 52)},
+            cost() {
+                if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(7e6)
+            if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(1e9)
+            if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(4e8)
+            if (player.CMEnlarge.upgradeOrder[3] == "32") return new Decimal("1.25e11")
+            },
+            effect() {
+                var timeMax = new Decimal(60).times(Decimal.pow(1.1, player.Miniprestige.upgrades.length - 7))
+                return Decimal.min(player.Miniprestige.resetTime, timeMax).div(4)},
+            effectDisplay() {return "-"+format(upgradeEffect("Miniprestige", 34))}
         },
     },
     achievements:{
@@ -343,7 +416,7 @@ addLayer("Miniprestige", {
         keep.push("achievements")
         if (layer.row == this.row) return
         else if (layer == "Smallprestige") {
-            if (hasUpgrade("Smallprestige", 21)) keep.push("upgrades")
+            if (hasAchievement("Partialprestige", 13)) keep.push("upgrades")
             layerDataReset(this.layer, keep)
         }
         else if (layer == "Partialprestige") {
