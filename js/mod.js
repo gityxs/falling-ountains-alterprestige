@@ -215,6 +215,7 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
+	if (player.Microprestige.points.lt(0)) player.Microprestige.points = new Decimal(0)
 	if (oldVersion == "0.4.0 Beta") if (player.Microprestige.milestones.includes("0")) player.Microprestige.buyables.pop()
 	if (oldVersion == "0.3.4 Beta") {
 		player.CMEnlarge.points = new Decimal(0)
