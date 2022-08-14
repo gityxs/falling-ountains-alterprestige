@@ -203,7 +203,7 @@ addLayer("Miniprestige", {
             description: "Minibuff levels^0.75 adds to CASCADE 22 cap, and the log2 of Minibuff levels adds to its exponent.",
             unlocked() {return hasAchievement("Unlockers", 52)},
             cost() {
-                if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(4.5e6)
+                if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(4e6)
             if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(6e8)
             if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(2.5e8)
             if (player.CMEnlarge.upgradeOrder[3] == "32") return new Decimal("1e11")

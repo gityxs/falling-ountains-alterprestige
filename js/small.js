@@ -64,6 +64,7 @@ addLayer("Smallprestige", {
         pow = pow.log2()
         pow = pow.times(1e10)
         pow = pow.plus(1).pow(1/10)
+        if (hasMilestone("Smallprestige", 5)) pow = player.Smallprestige.smallForce.plus(1).pow(1/250)
         return pow
     },
     smallForceBuy() {
@@ -240,7 +241,7 @@ addLayer("Smallprestige", {
             title: "Small Force III",
             cost(x) {
                 var cost = new Decimal("1e100")
-                return cost.times(new Decimal(100).pow(x.pow(2)))
+                return cost.times(new Decimal(1000).pow(x.pow(2)))
             },
             display() {
                 var display;
@@ -256,7 +257,7 @@ addLayer("Smallprestige", {
 
             },
             unlocked() {
-                return hasUpgrade("CMEnlarge", 51)
+                return hasAchievement("Unlockers", 54)
             },
             canAfford() {
                 return player[this.layer].smallForce.gte(this.cost())
@@ -347,12 +348,13 @@ addLayer("Smallprestige", {
         },
         5: {
             requirementDescription() {
-                return "1e200 Small Force (5)"
+                return "1e200 Small Force (6)"
             },
             done() {
                 return player.Smallprestige.smallForce.gte(1e200)
             },
-            effectDescription: "Small Force autobuyers bulk x5.",
+            effectDescription: "Small Force autobuyers bulk x5, and Small Force effect is now SF^1/250",
+            unlocked() {return hasAchievement("Unlockers", 54)}
         },
 
 

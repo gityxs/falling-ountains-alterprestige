@@ -210,7 +210,7 @@ addLayer("Microprestige", {
             display() {
                 var display;
                 display = "Multiply Capital gain by x" + format(this.effect())+"<br><br>"
-                display += "Formula: 1.05^x<br>"
+                display += "Formula: 1.15^x<br>"
                 display += "Cost: "+format(this.cost()) + " Microprestiges.<br>"
                 display += "Levels: " + format(player[this.layer].buyables[this.id]) + "+" + format(tmp[this.layer].buyables[this.id].totalAmount.minus(player[this.layer].buyables[this.id]))
                 return display;
@@ -228,13 +228,13 @@ addLayer("Microprestige", {
                 return amount
             },
             unlocked() {
-                if (hasUpgrade("Miniprestige", 21)) {
+                if (hasAchievement("Unlockers", 54)) {
                     return true
                 } else return false
 
             },
             effect() {
-                var base = new Decimal(1.05)
+                var base = new Decimal(1.15)
                 let eff = new Decimal(base).pow(tmp[this.layer].buyables[this.id].totalAmount)
                 return eff
             },
@@ -519,7 +519,11 @@ addLayer("Microprestige", {
             title: "Microfinale",
             description: "Raise Nanoprestige gain to the power of the log10 of this layer's effect.",
             cost: new Decimal("1e800000"),
-            unlocked() {return hasAchievement("Unlockers", 45) && player.Microprestige.pageNumber.equals(1)},
+            effect() {
+                return tmp.Microprestige.effect.plus(10).log10()
+            },
+            effectDisplay() {return "^"+format(upgradeEffect("Microprestige", 55))},
+            unlocked() {return hasAchievement("Unlockers", 54) && player.Microprestige.pageNumber.equals(1)},
         },
         61: {
             name: "MicroVI",
@@ -609,6 +613,7 @@ addLayer("Microprestige", {
         keep.push("pageNumber")
         keep.push("milestones")
         if (hasMilestone("Microprestige", 0)) keep.push("upgrades")
+        
         if (layer.row == this.row) return
         else if (layer == "Miniprestige") {
             if (hasAchievement("Miniprestige", 41)) keep.push("upgrades")
@@ -621,6 +626,7 @@ addLayer("Microprestige", {
         } else if (layer == "Smallprestige") {
             if (hasUpgrade("Miniprestige", 11)) keep.push("upgrades")
             if (hasAchievement("Smallprestige", 21)) keep.push("upgrades")
+            if (hasAchievement("Partialprestige", 11)) keep.push("challenges")
             layerDataReset(this.layer, keep)
 
         }
@@ -634,12 +640,18 @@ addLayer("Microprestige", {
     milestones: {
         0: {
             requirementDescription: "5 rows of Microprestige upgrades",
-            effectDescription: "Per milestone, square the effect of Microgains.",
+            effectDescription: "Per milestone, square the effect of Microgains. Keep upgrades on all resets.",
             done() {
                 return tmp.Microprestige.completedRows >= 5
             },
-        }
-
+        },
+        1: {
+            requirementDescription: "6 rows of Microprestige upgrades",
+            effectDescription: "Automatically gain Miniprestiges, and any time-based Miniprestige upgrades/buyables are based on the highest non-automated layer. Keep challenges on all resets.",
+            done() {
+                return tmp.Microprestige.completedRows >= 6
+            },
+        },
 
     },
     automate() {
@@ -1060,7 +1072,7 @@ addLayer("CMEnlarge", {
         11: {
             name: "NANO ENLARGEMENT",
             title: "NANO ENLARGEMENT",
-            description: "Decrease row 2 merge time by 2 seconds per upgrade, and unlock 5 Nanoprestige upgrades and 5 Nanoprestige milestones.",
+            description: "Decrease row 2 merge time by 2 seconds per upgrade, and unlock 5 Nanoprestige upgrades and 4 Nanoprestige milestones.",
             cost() {
                 if (hasUpgrade("CMEnlarge", 11)) return 1
                 else return new Decimal(player.CMEnlarge.upgrades.length).plus(1)
@@ -1080,7 +1092,7 @@ addLayer("CMEnlarge", {
         31: {
             name: "MICRO ENLARGEMENT",
             title: "MICRO ENLARGEMENT",
-            description: "Increase the base power of Micro and Mini buyables by 0.02 per Enlargement upgrade, and unlock 5 Microprestige upgrades.",
+            description: "Raise the amount of the first three Microprestige buyables ^1.05 per upgrade, and unlock 5 Microprestige upgrades.",
             cost() {
                 if (!hasUpgrade("CMEnlarge", 31)) return new Decimal(player.CMEnlarge.upgrades.length).plus(1)
                 if (player.CMEnlarge.upgradeOrder[1] == "31") return new Decimal(2)
@@ -1122,7 +1134,7 @@ addLayer("CMEnlarge", {
         33: {
             name: "SMALL ENLARGEMENT",
             title: "SMALL ENLARGEMENT",
-            description: "Reduce the Smallprestige cost scalings by 0.01 per Enlargement upgrade, and unlock 5 Smallprestige upgrades.",
+            description: "Multiply Smallprestige exponent by 1.02 per upgrade, and unlock 5 Smallprestige upgrades.",
             cost() {
                 if (!hasUpgrade("CMEnlarge", 33)) return new Decimal(player.CMEnlarge.upgrades.length).plus(1)
                 if (player.CMEnlarge.upgradeOrder[1] == "33") return new Decimal(2)
@@ -1143,7 +1155,7 @@ addLayer("CMEnlarge", {
         51: {
             name: "BUYABLE ENLARGEMENT",
             title: "BUYABLE ENLARGEMENT",
-            description: "Decrease minimum C11 time by 0.9x per Expansion upgrade, and unlock a buyable for every primary layer so far & Broken Nano.",
+            description: "Decrease minimum C11 time by 0.9x per Expansion upgrade, and unlock a buyable for Nano, Micro, Small, and BN.",
             cost() {return new Decimal(5)},
             canAfford() {return hasUpgrade("CMEnlarge", 31) && hasUpgrade("CMEnlarge", 32) && hasUpgrade("CMEnlarge", 33)},
             onPurchase() {player.CMEnlarge.points = player.CMEnlarge.points.plus(player.CMEnlarge.upgrades.length)},
@@ -1158,7 +1170,7 @@ addLayer("CMEnlarge", {
         61: {
             name: "EXPANSION",
             title: "EXPANSION",
-            description: "<b> This upgrade fundamentally changes both this layer and Cascade! </b><br> <br>Reset Enlargements to 0, completely reset Cascade, nullify all Enlargement milestone effects, remove all bonuses to Cascade buyable caps and costs thus far, get a few new upgrades across a couple layers, unlock a third row of Cascade buyables, and unlock Expansions.",
+            description: "<b> This upgrade fundamentally changes both this layer and Cascade! </b><br> <br>Completely reset Cascade, reduce all Cascade buyable caps to their base, unlock a third row of Cascade buyables, and expand the upgrade tree.",
             cost() {return new Decimal(6)},
             canAfford() {return hasUpgrade("CMEnlarge", 51)},
             onPurchase() {player.CMEnlarge.points = player.CMEnlarge.points.plus(player.CMEnlarge.upgrades.length)},

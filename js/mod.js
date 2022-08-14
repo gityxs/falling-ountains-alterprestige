@@ -23,7 +23,7 @@ let changelog = `<h1>Changelog:</h1><br>
 		<h3>Active Enlargement</h3><br>
 		- 5 new Nanoprestige upgrades<br>
 		- 5 new Microprestige upgrades<br>
-		- 5 new Miniprestige upgrades<br>
+		- <strike>5</strike> 4 new Miniprestige upgrades<br>
 		- 5 new Smallprestige upgrades<br>
 		- 5 new Cascading Micro upgrades<br>
 		- Additional buyables and milestones <br>
@@ -39,7 +39,9 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Added six new Unlockers <br>
 		- Fixed bug where Nanomuscle would remain active in Nano challenge 12<br>
 		- Fixed bug where [S] Cascade would show as unlocked after Partialprestiging for the first time <br>
-		- The ability to buy max Nanoprestiges has been moved to Nano upgrade 13 rather than 23. <br> <br>
+		- The ability to buy max Nanoprestiges has been moved to Nano upgrade 13 rather than 23. <br>
+		- There are some upgrades that are unpurchasable at the moment (Micro 55 and EXPANSION) - these have no programmed effect yet.<br>
+		- probably a bunch of other stuff I forgot <br><br>
 	<h3>v0.3.4</h3><br>
 		Introduction to the Cascade<br>
 		- Added 2 new layers, Cascade & Enlargement <br>
@@ -216,6 +218,7 @@ function fixOldSave(oldVersion){
 		player.BrokenMicro.buyables[21] = new Decimal(0)
 		player.BrokenMicro.buyables[22] = new Decimal(0)
 		if (hasUpgrade("Miniprestige", 24)) player.Miniprestige.upgrades.pop()
+		if (hasUpgrade("Microprestige", 55)) player.Microprestige.upgrades.pop()
 		player.points = new Decimal(0)
 		player.Nanoprestige.points = new Decimal(0)
 		player.BrokenMicro.points = new Decimal(0)
