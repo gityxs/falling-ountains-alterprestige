@@ -13,12 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4.0a Beta",
+	num: "0.4.0b Beta",
 	name: "Fleshed Out",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br><br>
+	<h3>v0.4.0b</h3><br>
+		- Fixed bug where Microprestige buyables would make you pay twice the cost <br>
+	<h3>v0.4.0a</h3><br>
+		- Fixed save migration issues. <br>
 	<h2>v0.4.0</h2><br>
 		<h3>Active Enlargement</h3><br>
 		- 5 new Nanoprestige upgrades<br>
@@ -211,6 +215,7 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
+	if (player.Microprestige.points.lt(0)) player.Microprestige.points = new Decimal(0)
 	if (oldVersion == "0.4.0 Beta") if (player.Microprestige.milestones.includes("0")) player.Microprestige.buyables.pop()
 	if (oldVersion == "0.3.4 Beta") {
 		player.CMEnlarge.points = new Decimal(0)
