@@ -13,7 +13,7 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4.0 Beta",
+	num: "0.4.0a Beta",
 	name: "Fleshed Out",
 }
 
@@ -211,14 +211,15 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
+	if (oldVersion == "0.4.0 Beta") if (player.Microprestige.milestones.includes("0")) player.Microprestige.buyables.pop()
 	if (oldVersion == "0.3.4 Beta") {
 		player.CMEnlarge.points = new Decimal(0)
 		player.CMEnlarge.milestones = []
 		player.BrokenMicro.buyables[11] = new Decimal(0)
 		player.BrokenMicro.buyables[21] = new Decimal(0)
 		player.BrokenMicro.buyables[22] = new Decimal(0)
-		if (hasUpgrade("Miniprestige", 24)) player.Miniprestige.upgrades.pop()
-		if (hasUpgrade("Microprestige", 55)) player.Microprestige.upgrades.pop()
+		if (player.Miniprestige.upgrades.includes("24")) player.Miniprestige.upgrades.pop()
+		if (player.Microprestige.upgrades.includes("55")) player.Microprestige.upgrades.pop()
 		player.points = new Decimal(0)
 		player.Nanoprestige.points = new Decimal(0)
 		player.BrokenMicro.points = new Decimal(0)
