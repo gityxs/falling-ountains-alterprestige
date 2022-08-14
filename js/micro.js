@@ -83,7 +83,6 @@ addLayer("Microprestige", {
             canAfford() { return player[this.layer].points.gte(this.cost()) },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
-                player[this.layer].points = player[this.layer].points.sub(this.cost())
                 var bulk = new Decimal(1)
                 if (hasAchievement("Partialprestige", 11)) bulk = bulk.times(5)
                 if (hasUpgrade("Microprestige", 61)) bulk = bulk.times(25)
@@ -135,7 +134,6 @@ addLayer("Microprestige", {
                 return amount
             },
             buy() {
-                player[this.layer].points = player[this.layer].points.sub(this.cost())
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
                 var bulk = new Decimal(1)
                 if (hasAchievement("Partialprestige", 11)) bulk = bulk.times(5)

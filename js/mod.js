@@ -13,12 +13,16 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4.0a Beta",
+	num: "0.4.0b Beta",
 	name: "Fleshed Out",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br><br>
+	<h3>v0.4.0b</h3><br>
+		- Fixed bug where Microprestige buyables would make you pay twice the cost <br>
+	<h3>v0.4.0a</h3><br>
+		- Fixed save migration issues. <br>
 	<h2>v0.4.0</h2><br>
 		<h3>Active Enlargement</h3><br>
 		- 5 new Nanoprestige upgrades<br>
