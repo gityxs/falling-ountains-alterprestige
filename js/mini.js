@@ -178,6 +178,7 @@ addLayer("Miniprestige", {
             description: "Minibuff now grows exponentially over time, but caps out at 60 seconds.",
             unlocked() {return hasAchievement("Unlockers", 52)},
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("32")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(1e6)
                 if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(1.25e8)
                 if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(5e7)
@@ -188,9 +189,10 @@ addLayer("Miniprestige", {
        32: {
             name: "Mini II",
             title: "Mini II",
-            description: "Per upgrade over 7, increase the effect of time by 2x, the cap of time by 1.25x, and keep one Broken Nano upgrade.",
+            description: "Per upgrade over 7, increase the effect of time by 2x, the cap of time by 1.1x, and keep one Broken Nano upgrade.",
             unlocked() {return hasAchievement("Unlockers", 52)},
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("32")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(3e6)
             if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(2.5e8)
             if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(1.75e8)
@@ -203,6 +205,7 @@ addLayer("Miniprestige", {
             description: "Minibuff levels^0.75 adds to CASCADE 22 cap, and the log2 of Minibuff levels adds to its exponent.",
             unlocked() {return hasAchievement("Unlockers", 52)},
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("32")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(4e6)
             if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(6e8)
             if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(2.5e8)
@@ -217,6 +220,7 @@ addLayer("Miniprestige", {
             description: "Reduce CASCADE 11 cost && increase its cap based on time this Miniprestige, up to the cap.",
             unlocked() {return hasAchievement("Unlockers", 52)},
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("32")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "32") return new Decimal(7e6)
             if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(1e9)
             if (player.CMEnlarge.upgradeOrder[1] == "31" && player.CMEnlarge.upgradeOrder[2] == "32") return new Decimal(4e8)
@@ -227,6 +231,11 @@ addLayer("Miniprestige", {
                 return Decimal.min(player.Miniprestige.resetTime, timeMax).div(4)},
             effectDisplay() {return "-"+format(upgradeEffect("Miniprestige", 34))}
         },
+    },
+    automate() {
+        if(hasMilestone("CMEnlarge", 2)) buyBuyable("Miniprestige", 11)
+
+
     },
     achievements:{
         11: {
@@ -261,19 +270,6 @@ addLayer("Miniprestige", {
             tooltip: "Unlock 2 buyables.",
             image() {
                 if (hasAchievement("Miniprestige", 13)) return "js/images/Miniprestige/mini13.png"
-                else return "js/images/unearn.png"
-            },
-            style: {
-                width:"128px",
-                height:"128px"
-            }
-        },
-        14: {
-            name: "Close enough for comfort",
-            done() {return player.Microprestige.points.gte(8)},
-            tooltip: "Get 8 Microprestiges.",
-            image() {
-                if (hasAchievement("Miniprestige", 14)) return "js/images/Miniprestige/mini14.png"
                 else return "js/images/unearn.png"
             },
             style: {
@@ -320,19 +316,6 @@ addLayer("Miniprestige", {
                 height:"128px"
             }
         },
-        34: {
-            name: "Shen Bapiro",
-            done() {return hasUpgrade("Microprestige", 23)},
-            tooltip: "Purchase Microstrawman.",
-            image() {
-                if (hasAchievement("Miniprestige", 34)) return "js/images/Miniprestige/mini34.png"
-                else return "js/images/unearn.png"
-            },
-            style: {
-                width:"128px",
-                height:"128px"
-            }
-        },
         41: {
             name: "Prefacing conclusions",
             done() {return player.Miniprestige.points.gte(3)},
@@ -360,25 +343,12 @@ addLayer("Miniprestige", {
             }
 
         },
-        43: {
-            name: "Leg Day",
-            done() {return player.Nanoprestige.buyables[11].gte(125)},
-            tooltip: "Buy Nanobuff 125 times.",
-            image() {
-                if (hasAchievement("Miniprestige", 43)) return "js/images/Miniprestige/mini43.png"
-                else return "js/images/unearn.png"
-            },
-            style: {
-                width:"128px",
-                height:"128px"
-            }
-        },
         44: {
             name: "Triple Threat",
             done() {return hasChallenge("Nanoprestige", 22)},
             tooltip: "Complete Nanofuse.",
             image() {
-                if (hasAchievement("Miniprestige", 44)) return "js/images/Miniprestige/mini44.png"
+                if (hasAchievement("Miniprestige", 44)) return "js/images/Miniprestige/mini43.png"
                 else return "js/images/unearn.png"
             },
             style: {

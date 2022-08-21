@@ -13,16 +13,26 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.4.0b Beta",
+	num: "0.4.0c Beta",
 	name: "Fleshed Out",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>Ping @Falling Mountain#4706 on discord to report bugs!</h3><br><br>
-	<h3>v0.4.0b</h3><br>
-		- Fixed bug where Microprestige buyables would make you pay twice the cost <br>
+	<h3>v0.4.0c</h3><br>
+		- Loading into this update while having progress past 1 Partialprestige resets you to the beginning of Partialprestige, with only achievements and unlockers intact.<br>
+		- Fixed bug where upgrade availability notifications would not show unless on the same page as the upgrade <br>
+		- Microblock has a changed debuff & requirement <br>
+		- Fixed bug stopping purchase of Nanogains when Nanobuff was at cap <br>
+		- Changed the second Microprestige milestone <br>
+		- Microfinale now costs Infinity <br>
+		- Upgrades gained from expansions will cost Infinity until the respective expansion is bought.<br>
+		- Changed effect of Microeconomics to increasing Microprestige power. <br>
+		- Removed three Miniprestige achievements. <br>
+	<br><h3>v0.4.0b</h3><br>
+		- Fixed bug where Microprestige buyables would make you pay twice the cost <br><br>
 	<h3>v0.4.0a</h3><br>
-		- Fixed save migration issues. <br>
+		- Fixed save migration issues. <br><br>
 	<h2>v0.4.0</h2><br>
 		<h3>Active Enlargement</h3><br>
 		- 5 new Nanoprestige upgrades<br>
@@ -179,7 +189,7 @@ function getPointGen() {
 	}
 	if (inChallenge("Nanoprestige", 11)) gain = gain.pow(0.1)
 if (hasUpgrade("Nanoprestige", 94)) gain = gain.pow(upgradeEffect("Nanoprestige", 94))
-	if (inChallenge("Microprestige", 11)) gain = gain.pow(0.01)
+	if (inChallenge("Microprestige", 11)) gain = gain.pow(0.05)
 	if (player.points.log10().gte(gain.log10().pow(1.5)) && player.Partialprestige.points.gte(1)) player.points = gain
 	return gain
 }
@@ -215,20 +225,68 @@ function maxTickLength() {
 // Use this if you need to undo inflation from an older version. If the version is older than the version that fixed the issue,
 // you can cap their current resources with this.
 function fixOldSave(oldVersion){
-	if (player.Microprestige.points.lt(0)) player.Microprestige.points = new Decimal(0)
-	if (oldVersion == "0.4.0 Beta") if (player.Microprestige.milestones.includes("0")) player.Microprestige.buyables.pop()
-	if (oldVersion == "0.3.4 Beta") {
-		player.CMEnlarge.points = new Decimal(0)
-		player.CMEnlarge.milestones = []
-		player.BrokenMicro.buyables[11] = new Decimal(0)
-		player.BrokenMicro.buyables[21] = new Decimal(0)
-		player.BrokenMicro.buyables[22] = new Decimal(0)
-		if (player.Miniprestige.upgrades.includes("24")) player.Miniprestige.upgrades.pop()
-		if (player.Microprestige.upgrades.includes("55")) player.Microprestige.upgrades.pop()
-		player.points = new Decimal(0)
-		player.Nanoprestige.points = new Decimal(0)
-		player.BrokenMicro.points = new Decimal(0)
-		player.Microprestige.points = new Decimal(0)
-	}
+	if (oldVersion == "0.3.4 Beta" || oldVersion == "0.4.0 Beta" || oldVersion == "0.4.0a Beta" || oldVersion == "0.4.0b Beta") {
+		if (player.Partialprestige.points.gte(1)) {
+			player.points = new Decimal(0)
+			player.Nanoprestige.points = new Decimal(0)
+			player.Nanoprestige.upgrades = []
+			player.Nanoprestige.milestones = []
+			player.Nanoprestige.challenges[11] = 0
+			player.Nanoprestige.challenges[12] = 0
+			player.Nanoprestige.challenges[21] = 0
+			player.Nanoprestige.challenges[22] = 0
+			player.Nanoprestige.buyables[11] = new Decimal(0)
+			player.Nanoprestige.buyables[12] = new Decimal(0)
+			player.Nanoprestige.buyables[13] = new Decimal(0)
+			player.Nanoprestige.buyables[21] = new Decimal(0)
+			player.Nanoprestige.buyables[22] = new Decimal(0)
+			player.Nanoprestige.buyables[23] = new Decimal(0)
+			player.Nanoprestige.buyables[31] = new Decimal(0)
+			player.Nanoprestige.buyables[32] = new Decimal(0)
+			player.Nanoprestige.buyables[33] = new Decimal(0)
+			player.BrokenNano.points = new Decimal(0)
+			player.BrokenNano.milestones = []
+			player.BrokenNano.upgrades = []
+			player.BrokenNano.buyables[11] = new Decimal(0)
+			player.BrokenNano.buyables[12] = new Decimal(0)
+			player.BrokenNano.buyables[13] = new Decimal(0)
+			player.BrokenNano.buyables[21] = new Decimal(0)
+			player.BrokenNano.buyables[22] = new Decimal(0)
+			player.BrokenNano.buyables[23] = new Decimal(0)
+			player.BrokenNano.buyables[31] = new Decimal(0)
+			player.BNCapital.points = new Decimal(0)
+			player.BNCapital.milestones = []
+			player.BNCommunal.points = new Decimal(0)
+			player.BNCommunal.milestones = []
+			player.Microprestige.points = new Decimal(0)
+			player.Microprestige.upgrades = []
+			player.Microprestige.milestones = []
+			player.Microprestige.challenges[11] = 0
+			player.Microprestige.buyables[11] = new Decimal(0)
+			player.Microprestige.buyables[12] = new Decimal(0)
+			player.Microprestige.buyables[13] = new Decimal(0)
+			player.Microprestige.buyables[21] = new Decimal(0)
+			player.BrokenMicro.points = new Decimal(0)
+			player.BrokenMicro.buyables[11] = new Decimal(0)
+			player.BrokenMicro.buyables[21] = new Decimal(0)
+			player.BrokenMicro.buyables[22] = new Decimal(0)
+			player.BrokenMicro.unlocked = false
+			player.CMEnlarge.points = new Decimal(0)
+			player.CMEnlarge.upgrades = []
+			player.CMEnlarge.upgradeOrder = []
+			player.CMEnlarge.milestones = []
+			player.Miniprestige.points = new Decimal(0)
+			player.Miniprestige.upgrades = []
+			player.Miniprestige.buyables[11] = new Decimal(0)
+			player.Smallprestige.points = new Decimal(0)
+			player.Smallprestige.upgrades = []
+			player.Smallprestige.milestones = []
+			player.Smallprestige.buyables[11] = new Decimal(0)
+			player.Smallprestige.buyables[12] = new Decimal(0)
+			player.Smallprestige.buyables[13] = new Decimal(0)
+			player.Smallprestige.smallForce = new Decimal(0)
 
+
+		}
+	}
 }

@@ -20,6 +20,7 @@ addLayer("Microprestige", {
         var eff = player.Microprestige.points.plus(1)
         if (hasUpgrade("Nanoprestige", 71)) eff = eff.pow(2)
         if (hasUpgrade("Microprestige", 61)) eff = eff.pow(Decimal.log2(tmp.BrokenMicro.effect).pow(2))
+        if (hasUpgrade("CMEnlarge", 51)) eff = eff.pow(buyableEffect("Microprestige", 21))
         return eff
     },
     effectDescription() {
@@ -88,7 +89,7 @@ addLayer("Microprestige", {
                 if (hasUpgrade("Microprestige", 61)) bulk = bulk.times(25)
                 if (hasMilestone("CMEnlarge", 3)) bulk = bulk.times(5)
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                
+                setBuyableAmount(this.layer, this.id, player[this.layer].buyables[this.id].div(bulk).ceil().mul(bulk))
             },
             totalAmount() {
                 var amount = new Decimal(player[this.layer].buyables[this.id])
@@ -122,6 +123,7 @@ addLayer("Microprestige", {
             title() { return "Micropierce"},
             display() {
                 var display;
+                
                 display = "Multiply the power of the first row of Nano buyables by " + format(this.effect())+"<br><br>"
                 display += "Cost: "+format(this.cost()) + " Microprestiges.<br>"
                 display += "Levels: " + format(player[this.layer].buyables[this.id]) + "+" + format(tmp[this.layer].buyables[this.id].totalAmount.minus(player[this.layer].buyables[this.id]))
@@ -139,6 +141,7 @@ addLayer("Microprestige", {
                 if (hasAchievement("Partialprestige", 11)) bulk = bulk.times(5)
                 if (hasMilestone("CMEnlarge", 3)) bulk = bulk.times(5)
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
+                setBuyableAmount(this.layer, this.id, player[this.layer].buyables[this.id].div(bulk).ceil().mul(bulk))
                 
             },
             unlocked() {
@@ -177,7 +180,7 @@ addLayer("Microprestige", {
                 if (hasUpgrade("Microprestige", 61)) bulk = bulk.times(5)
                 if (hasMilestone("CMEnlarge", 3)) bulk = bulk.times(5)
                 setBuyableAmount(this.layer, this.id, getBuyableAmount(this.layer, this.id).add(bulk))
-                
+                setBuyableAmount(this.layer, this.id, player[this.layer].buyables[this.id].div(bulk).ceil().mul(bulk))
             },
             totalAmount() {
                 var amount = new Decimal(player[this.layer].buyables[this.id])
@@ -207,8 +210,8 @@ addLayer("Microprestige", {
             title() { return "Microeconomics"},
             display() {
                 var display;
-                display = "Multiply Capital gain by x" + format(this.effect())+"<br><br>"
-                display += "Formula: 1.15^x<br>"
+                display = "Raise Microprestige effect ^" + format(this.effect())+"<br><br>"
+                display += "Formula: 2^x<br>"
                 display += "Cost: "+format(this.cost()) + " Microprestiges.<br>"
                 display += "Levels: " + format(player[this.layer].buyables[this.id]) + "+" + format(tmp[this.layer].buyables[this.id].totalAmount.minus(player[this.layer].buyables[this.id]))
                 return display;
@@ -232,7 +235,7 @@ addLayer("Microprestige", {
 
             },
             effect() {
-                var base = new Decimal(1.15)
+                var base = new Decimal(2)
                 let eff = new Decimal(base).pow(tmp[this.layer].buyables[this.id].totalAmount)
                 return eff
             },
@@ -246,14 +249,18 @@ addLayer("Microprestige", {
     challenges:{
         11: {
             name: "Microblock",
-            challengeDescription: "Point gain is raised to ^0.01.",
-            goalDescription: "1.79e7095 points",
-            canComplete: function() {return player.points.gte("1.79e7095")},
+            challengeDescription: "Nanoprestige bonus multiplier is raised ^0.1, and Point gain is raised to ^0.05.",
+            goalDescription: "1e6727 points",
+            canComplete: function() {return player.points.gte("1e6727")},
             rewardDescription: "Increase bonus multiplier to Nanoprestige ^1.2",
             unlocked() {return hasUpgrade("Microprestige", 35)},
             onEnter() {
                 player.Nanoprestige.points = new Decimal(0)
                 player.points = new Decimal(0)
+                player.BrokenNano.buyables[11] = new Decimal(0)
+			    player.BrokenNano.buyables[12] = new Decimal(0)
+			    player.BrokenNano.buyables[13] = new Decimal(0)
+                player.BrokenNano.points = new Decimal(0)
             },
         },
 
@@ -289,14 +296,14 @@ addLayer("Microprestige", {
                 return player[this.layer].points.add(1);
 
             },
-            unlocked() {return hasAchievement("Unlockers", 11) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 11) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         12: {
             name: "Micropush",
             title: "Micropush",
             description: "Nanoprestige cost is divided by 3.",
             cost: new Decimal(5),
-            unlocked() {return hasAchievement("Unlockers", 11) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 11) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         13: {
             name :"Micromint",
@@ -308,28 +315,28 @@ addLayer("Microprestige", {
                 return tmp.Nanoprestige.effect;
             },
             effectDisplay() {return "/"+format(tmp.Nanoprestige.effect)},
-            unlocked() {return hasAchievement("Unlockers", 11) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 11) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         14: {
             name:"Microhelp",
             title: "Microrecharge",
-            description: "Unlock a Microprestige buyable.",
+            description: "Unlock a Microprestige buyable, and you can buy max Microprestige",
             cost: new Decimal(84),
-            unlocked() {return hasAchievement("Unlockers", 24) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 24) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         21: {
             name:"Microgesture",
             title:"Microgesture",
             description: "Unlock a new set of Nano upgrades, and Nanoprestige effect increased ^2",
             cost: new Decimal(7),
-            unlocked() {return hasAchievement("Unlockers", 13) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 13) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         22: {
             name:"Microagression",
             title:"Microagression",
             description: "Microprestiges give a bigger boost to point gain, and increase the base of Nanobuff.",
             cost: new Decimal(10),
-            unlocked() {return hasAchievement("Unlockers", 15) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 15) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
             effect() {
                 var eff = new Decimal(10).pow(player.Microprestige.points.plus(1))
                 if (hasUpgrade("Microprestige", 31)) eff = eff.pow(2)
@@ -361,7 +368,7 @@ addLayer("Microprestige", {
             title: "Microstrawman",
             description: "Miniprestiges give a bigger boost to point gain, and unlock new Nanoprestige upgrades.",
             cost: new Decimal(19),
-            unlocked() {return hasAchievement("Unlockers", 15) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 15) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
             effect() { 
                 var eff = new Decimal(1e10).pow(player.Miniprestige.points.plus(1))
                 if (hasUpgrade("Microprestige", 32)) eff = eff.pow(1.3)
@@ -381,7 +388,7 @@ addLayer("Microprestige", {
             title: "Microexpo",
             description: "Automatically Microprestige. Microprestige scaling decreased.",
             cost: new Decimal(210),
-            unlocked() {return hasAchievement("Unlockers", 25) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 25) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
 
         },
         31: {
@@ -389,21 +396,21 @@ addLayer("Microprestige", {
             title: "Microlove",
             description: "Raise Microagression to ^2.",
             cost: new Decimal(30),
-            unlocked() {return hasAchievement("Unlockers", 22) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 22) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         32: {
             name: "Microhate",
             title: "Microhate",
             description: "Raise Microstrawman to ^1.3, and multiply Point gain by 2401.",
             cost: new Decimal(42),
-            unlocked() {return hasAchievement("Unlockers", 22) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 22) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         33: {
             name: "Microshove",
             title: "Microshove",
             description: "Multiply point gain based on Micro upgrades gained.",
             cost: new Decimal(43),
-            unlocked() {return hasAchievement("Unlockers", 22) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 22) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
             effect() {return new Decimal(1e3).pow(player.Microprestige.upgrades.length)},
             effectDisplay() {return "x" + format(new Decimal(1e3).pow(player.Microprestige.upgrades.length))}
         },
@@ -412,35 +419,35 @@ addLayer("Microprestige", {
             title: "Micronano",
             description: "Nanoprestiges no longer reset anything, gives 33% progress to breaking Nano, and improves Microbuff.",
             cost: new Decimal(319),
-            unlocked() {return hasAchievement("Unlockers", 26) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 26) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         41: {
             name: "Microfracture",
             title: "Microfracture",
             description: "Microprestige scaling is decreased based on total Nanoprestige upgrades bought. Nano is 33% more broken.",
             cost: new Decimal(358),
-            unlocked() {return hasAchievement("Unlockers", 31) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 31) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         42: {
             name: "Microshatter",
             title: "Microshatter",
             description: "Nano. Nano? N̡̅anō͙. N̠̍ā͎͔̠͉̪̉̀̕͞n̢͓̘̗̐̈̆̋͟͡ò̡̢̇.",
             cost: new Decimal(739),
-            unlocked() {return hasAchievement("Unlockers", 32) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 32) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         43: {
             name: "Microreduction",
             title: "Microreduction",
             description: "Unlock a new buyable.",
             cost: new Decimal(2800),
-            unlocked() {return hasAchievement("Unlockers", 32) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 32) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         44: {
             name: "Microplummet",
             title: "Microplummet",
             description: "Nanoprestige effect multiplies Nanoprestige gain at a greatly reduced rate.",
             cost: new Decimal(32250),
-            unlocked() {return hasAchievement("Unlockers", 32) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 32) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
             effect() {
                 return tmp.Nanoprestige.effect.plus(10).ln()
             },
@@ -451,35 +458,35 @@ addLayer("Microprestige", {
             title: "Microlife",
             description: "Improve the Break Constant formula by a small amount.",
             cost: new Decimal(85700000),
-            unlocked() {return hasAchievement("Unlockers", 35) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 35) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         25: {
             name: "Microdeath",
             title: "Microdeath",
             description: "Miniprestige effect on Nanoprestige Fragments is now exponential.",
             cost: new Decimal(112e6),
-            unlocked() {return hasAchievement("Unlockers", 35) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 35) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         35: {
             name: "Micronerf",
             title: "Micronerf",
             description: "Unlock a Microprestige challenge.",
             cost: new Decimal(118e6),
-            unlocked() {return hasAchievement("Unlockers", 35) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 35) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         45: {
             name: "Micron",
             title: "Micron",
             description: "Break Constant power is increased by 1.25x.",
             cost: new Decimal("7.21e17"),
-            unlocked() {return hasAchievement("Unlockers", 35) && player.Microprestige.pageNumber.equals(1)}
+            unlocked() {return hasAchievement("Unlockers", 35) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")}
         },
         51: {
             name: "MicroI",
             title: "MicroI",
             description: "Raise Miniexplode ^2401.",
             cost: new Decimal(1e45),
-            unlocked() {return hasAchievement("Unlockers", 45) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 45) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         
         52:  {
@@ -491,14 +498,14 @@ addLayer("Microprestige", {
             },
             effectDisplay() {return "x" + format(upgradeEffect("Microprestige", 52))},
             cost: new Decimal(1e50),
-            unlocked() {return hasAchievement("Unlockers", 45) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 45) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         53: {
             name: "MicroIII",
             title: "MicroIII",
             description: "Add Capitals to the Miniexplode formula, and multiply Microprestige gain by log10(Break Constant)",
             cost: new Decimal("1e60"),
-            unlocked() {return hasAchievement("Unlockers", 45) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 45) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         
         54: {
@@ -510,48 +517,51 @@ addLayer("Microprestige", {
                 return player.Smallprestige.points.plus(1)
             },
             effectDisplay() {return format(upgradeEffect("Microprestige", 54)) + "x"},
-            unlocked() {return hasAchievement("Unlockers", 45) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 45) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         55: {
             name: "Microfinale",
             title: "Microfinale",
             description: "Raise Nanoprestige gain to the power of the log10 of this layer's effect.",
-            cost: new Decimal("1e800000"),
+            cost: Decimal.dInf,
             effect() {
                 return tmp.Microprestige.effect.plus(10).log10()
             },
             effectDisplay() {return "^"+format(upgradeEffect("Microprestige", 55))},
-            unlocked() {return hasAchievement("Unlockers", 54) && player.Microprestige.pageNumber.equals(1)},
+            unlocked() {return hasAchievement("Unlockers", 54) && (player.Microprestige.pageNumber.equals(1) || player.tab != "Microprestige")},
         },
         61: {
             name: "MicroVI",
             title: "MicroVI",
-            description: "Bulk buy 5x more Microbuff, and its base multiplier is the Miniprestige effect, which itself is buffed massively.",
+            description: "Bulk buy 5x more Microbuff, and its base multiplier is the Microprestige effect, which itself is buffed massively.",
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("31")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "31") return new Decimal("1e1100")
                 if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e7500")
                 if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e2500")
                 if (player.CMEnlarge.upgradeOrder[3] == "31") return new Decimal("1e25000")
             },
-            unlocked() {return hasAchievement("Unlockers", 51) && player.Microprestige.pageNumber.equals(2)},
+            unlocked() {return hasAchievement("Unlockers", 51) && (player.Microprestige.pageNumber.equals(2) || player.tab != "Microprestige")},
         },
         62: {
             name: "MicroVII",
             title: "MicroVII",
             description: "Cascade Constant exponent increased by 2, and all Cascade buyable caps are increased by 7.",
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("31")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "31") return new Decimal("1e1200")
                 if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e8000")
                 if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e2750")
                 if (player.CMEnlarge.upgradeOrder[3] == "31") return new Decimal("1e34000")
             },
-            unlocked() {return hasAchievement("Unlockers", 51) && player.Microprestige.pageNumber.equals(2)},
+            unlocked() {return hasAchievement("Unlockers", 51) && (player.Microprestige.pageNumber.equals(2) || player.tab != "Microprestige")},
         },
         63: {
             name: "MicroVIII",
             title: "MicroVIII",
             description: "Break Constant exponent increased based on Micro effect. Keep one BN upgrade on SP per upgrade this row.",
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("31")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "31") return new Decimal("1e1500")
                 if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e9000")
                 if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e3250")
@@ -562,13 +572,14 @@ addLayer("Microprestige", {
 
             },
             effectDisplay() {return "^"+format(upgradeEffect("Microprestige", 63))},
-            unlocked() {return hasAchievement("Unlockers", 51) && player.Microprestige.pageNumber.equals(2)},
+            unlocked() {return hasAchievement("Unlockers", 51) && (player.Microprestige.pageNumber.equals(2) || player.tab != "Microprestige")},
         },
         64: {
             name: "MicroIX",
             title: "MicroIX",
             description: "Decrease CASCADE 11 cost by the log10(log10) of Microprestige's effect.",
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("31")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "31") return new Decimal("1e2250")
                 if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e12000")
                 if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e4500")
@@ -579,19 +590,20 @@ addLayer("Microprestige", {
 
             },
             effectDisplay() {return "-"+format(upgradeEffect("Microprestige", 64))},
-            unlocked() {return hasAchievement("Unlockers", 51) && player.Microprestige.pageNumber.equals(2)},
+            unlocked() {return hasAchievement("Unlockers", 51) && (player.Microprestige.pageNumber.equals(2) || player.tab != "Microprestige")},
         },
         65: {
             name: "MicroVII",
             title: "MicroVII",
             description: "Add maximum levels to all CASCADE caps based on the last upgrade's effect.",
             cost() {
+                if (!player.CMEnlarge.upgradeOrder.includes("31")) return Decimal.dInf
                 if (player.CMEnlarge.upgradeOrder[1] == "31") return new Decimal("1e3000")
                 if (player.CMEnlarge.upgradeOrder[1] == "32" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e16000")
                 if (player.CMEnlarge.upgradeOrder[1] == "33" && player.CMEnlarge.upgradeOrder[2] == "31") return new Decimal("1e5600")
                 if (player.CMEnlarge.upgradeOrder[3] == "31") return new Decimal("1e58000")
             },
-            unlocked() {return hasAchievement("Unlockers", 51) && player.Microprestige.pageNumber.equals(2)},
+            unlocked() {return hasAchievement("Unlockers", 51) && (player.Microprestige.pageNumber.equals(2) || player.tab != "Microprestige")},
         },
     },
     completedRows() {
@@ -633,7 +645,7 @@ addLayer("Microprestige", {
         return hasUpgrade("Microprestige", 24)
     },
     canBuyMax() {
-        return hasUpgrade("Microprestige", 24)
+        return hasUpgrade("Microprestige", 14)
     },
     milestones: {
         0: {
@@ -645,10 +657,13 @@ addLayer("Microprestige", {
         },
         1: {
             requirementDescription: "6 rows of Microprestige upgrades",
-            effectDescription: "Automatically gain Miniprestiges, and any time-based Miniprestige upgrades/buyables are based on the highest non-automated layer. Keep challenges on all resets.",
+            effectDescription: "Per milestone, multiply Capital gain by 1.2. Keep challenges on all resets.",
             done() {
                 return tmp.Microprestige.completedRows >= 6
+
+
             },
+
         },
 
     },
@@ -1168,7 +1183,7 @@ addLayer("CMEnlarge", {
         61: {
             name: "EXPANSION",
             title: "EXPANSION",
-            description: "<b> This upgrade fundamentally changes both this layer and Cascade! </b><br> <br>Completely reset Cascade, reduce all Cascade buyable caps to their base, unlock a third row of Cascade buyables, and expand the upgrade tree.",
+            description: "<b> This upgrade fundamentally changes both this layer and Cascade! </b><br> <br> Adds another set of buyables to the tree, double Cascade rate, unlock a new sub-layer Expansions with its own upgrade tree, and unlock the NX layer, but remove all increases to buyable caps and add scaling to row 2 buyables.",
             cost() {return new Decimal(6)},
             canAfford() {return hasUpgrade("CMEnlarge", 51)},
             onPurchase() {player.CMEnlarge.points = player.CMEnlarge.points.plus(player.CMEnlarge.upgrades.length)},
@@ -1197,7 +1212,7 @@ addLayer("CMEnlarge", {
         2: {
             requirementDescription: "3 Enlargements",
             done() {return player.CMEnlarge.points.gte(3)},
-            effectDescription: "Increase buyable exchange rate by 1, and buyable caps to compensate. Cascade 11 cost increase is reduced by 0.1 seconds. Autobuy Mini buyables."
+            effectDescription: "Increase buyable exchange rate by 1, and buyable caps to compensate. Cascade 11 cost increase is reduced by 0.1 seconds. Autobuy the first Mini buyable."
         },
         3: {
             requirementDescription: "4 Enlargements",
