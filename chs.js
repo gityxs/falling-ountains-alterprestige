@@ -81,7 +81,7 @@ var cnItems = {
     "Micropush": "微型促进",
     "Mini upgrade 13. Unlocks BN upgrades 12, 13, 14, 15": "迷你升级13.解锁BN升级12、13、14、15",
     "Miniprestige for the first time. Unlocks the Upgrade subtab on all layers.": "第一次迷你声望。解锁所有层上的升级子选项卡。",
-    "Miniprestiges": "微型声望",
+    "Miniprestiges": "迷你声望",
     "Nano upgrade 13. Shows Buyable menu on Nanoprestige.": "纳米升级13. 在 纳米声望 显示可购买的菜单。",
     "Nano upgrade 44. Shows Challenge menu on Nanoprestige.": "纳米升级44.在 纳米声望 显示挑战菜单。",
     "Nanoclick": "纳米点击",
